@@ -1,4 +1,4 @@
-namespace Building.Core;
+namespace WebApi;
 
 public class WeatherForecast
 {
