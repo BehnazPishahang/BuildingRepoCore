@@ -15,6 +15,10 @@ namespace Persistence
 
         }
 
-        public DbSet<Item> items { get; set; }
+        public DbSet<Cost> Costs { get; set; }
+
+        public DbSet<CostType> CostTypes { get; set; }
+
+        public DbSet<ObjectState> ObjectStates { get; set; }
     }
 }
