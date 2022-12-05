@@ -345,3 +345,4 @@ healthchecksdb
 /**/wwwroot/css
 /src/WebApi/appsettings.json
 /src/WebApi/appsettings.Development.json
+Building.Core.sln
