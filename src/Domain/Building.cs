@@ -18,5 +18,6 @@ namespace Domain
         public int Plaque { get; set; }
 
         public string CityName { get; set; }
+
     }
 }
