@@ -19,5 +19,7 @@ namespace Domain
 
         public string CityName { get; set; }
 
+
+
     }
 }
