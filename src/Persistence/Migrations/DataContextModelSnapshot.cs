@@ -22,80 +22,74 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Building", b =>
+            modelBuilder.Entity("Domain.Building.Building", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CityName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FloorCount")
+                    b.Property<int?>("FloorCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("Plaque")
+                    b.Property<int?>("Plaque")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Building");
+                    b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("Domain.Cost", b =>
+            modelBuilder.Entity("Domain.Cost.Cost", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("BuildingId")
+                    b.Property<Guid?>("BUILDINGID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("CashAmount")
+                    b.Property<Guid?>("COSTTYPEID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("CashAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("CostTypeId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EventDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FromDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ObjectStateId")
+                    b.Property<Guid?>("OBJECTSTATEID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ToDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId");
+                    b.HasIndex("BUILDINGID");
 
-                    b.HasIndex("CostTypeId");
+                    b.HasIndex("COSTTYPEID");
 
-                    b.HasIndex("ObjectStateId");
+                    b.HasIndex("OBJECTSTATEID");
 
                     b.ToTable("Costs");
                 });
 
-            modelBuilder.Entity("Domain.CostType", b =>
+            modelBuilder.Entity("Domain.Cost.CostType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,7 +108,7 @@ namespace Persistence.Migrations
                     b.ToTable("CostTypes");
                 });
 
-            modelBuilder.Entity("Domain.ObjectState", b =>
+            modelBuilder.Entity("Domain.ObjectState.ObjectState", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,31 +127,30 @@ namespace Persistence.Migrations
                     b.ToTable("ObjectStates");
                 });
 
-            modelBuilder.Entity("Domain.Cost", b =>
+            modelBuilder.Entity("Domain.Cost.Cost", b =>
                 {
-                    b.HasOne("Domain.Building", "Building")
+                    b.HasOne("Domain.Building.Building", "TheBuilding")
+                        .WithMany("TheCostList")
+                        .HasForeignKey("BUILDINGID");
+
+                    b.HasOne("Domain.Cost.CostType", "TheCostType")
                         .WithMany()
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("COSTTYPEID");
 
-                    b.HasOne("Domain.CostType", "CostType")
+                    b.HasOne("Domain.ObjectState.ObjectState", "TheObjectState")
                         .WithMany()
-                        .HasForeignKey("CostTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OBJECTSTATEID");
 
-                    b.HasOne("Domain.ObjectState", "ObjectState")
-                        .WithMany()
-                        .HasForeignKey("ObjectStateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("TheBuilding");
 
-                    b.Navigation("Building");
+                    b.Navigation("TheCostType");
 
-                    b.Navigation("CostType");
+                    b.Navigation("TheObjectState");
+                });
 
-                    b.Navigation("ObjectState");
+            modelBuilder.Entity("Domain.Building.Building", b =>
+                {
+                    b.Navigation("TheCostList");
                 });
 #pragma warning restore 612, 618
         }

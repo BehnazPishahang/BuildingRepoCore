@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Cost
 {
-    public class ObjectState: BaseEntity
+    public class CostType : BaseEntity
     {
         public string Code { get; set; }
 
