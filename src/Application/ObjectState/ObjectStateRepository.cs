@@ -1,6 +1,13 @@
-﻿namespace Application.ObjectState;
+﻿using Application.Common;
+using Application.Cost;
+using Persistence;
 
-public class ObjectStateRepository
+namespace Application.ObjectState;
+
+public class ObjectStateRepository : GenericRepository<Domain.ObjectState.ObjectState>, IObjectStateRepository
 {
-    
+    public ObjectStateRepository(DataContext context) : base(context)
+    {
+
+    }
 }
