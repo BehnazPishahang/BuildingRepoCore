@@ -1,6 +1,6 @@
 ﻿namespace Application.ObjectState;
 
-public class ObjectState
+public class ObjectStateRepository
 {
     
 }

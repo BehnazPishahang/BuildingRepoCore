@@ -1,6 +1,6 @@
 ﻿namespace Application.Cost;
 
-public interface ICost
+public interface ICostRepository
 {
     
 }
