@@ -1,9 +1,11 @@
-﻿namespace Application.Cost;
+﻿using Application.Common;
+using Persistence;
 
-public class Cost : GenericRepository<Domain.Building.Building>, Application.Building.IBuildingRepository
+namespace Application.Cost;
+
+public class CostRepository : GenericRepository<Domain.Cost.Cost>, ICostRepository
 {
-
-    public BuildingRepository(DataContext context) : base(context)
+    public CostRepository(DataContext context) : base(context)
     {
 
     }

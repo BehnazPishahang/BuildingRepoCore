@@ -1,6 +1,8 @@
-﻿namespace Application.ObjectState;
+﻿using Application.Common;
 
-public interface IObjectStateRepository
+namespace Application.ObjectState;
+
+public interface IObjectStateRepository:IGenericRepository<Domain.ObjectState.ObjectState>
 {
     
 }

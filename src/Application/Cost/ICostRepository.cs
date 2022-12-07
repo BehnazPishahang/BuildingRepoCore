@@ -1,6 +1,8 @@
-﻿namespace Application.Cost;
+﻿using Application.Common;
 
-public interface ICostRepository
+namespace Application.Cost;
+
+public interface ICostRepository:IGenericRepository<Domain.Cost.Cost>
 {
     
 }
