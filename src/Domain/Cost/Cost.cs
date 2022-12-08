@@ -21,14 +21,16 @@ namespace Domain.Cost
 
         public decimal? CashAmount { get; set; }
 
-        [ForeignKey("BUILDINGID")]
         public virtual Building.Building? TheBuilding { get; set; }
+        
+        public Guid BuildingId { get; set; }
 
-        [ForeignKey("COSTTYPEID")]
         public virtual CostType? TheCostType { get; set; }
 
-        [ForeignKey("OBJECTSTATEID")]
+        public Guid CostTypeId { get; set; }
+        
         public virtual Domain.ObjectState.ObjectState? TheObjectState { get; set; }
-
+        
+        public Guid ObjectStateId { get; set; }
     }
 }
