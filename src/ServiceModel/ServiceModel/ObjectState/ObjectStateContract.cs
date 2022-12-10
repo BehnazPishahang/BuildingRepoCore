@@ -1,4 +1,4 @@
-namespace Controllers.ObjectState;
+namespace ServiceModel.ObjectState;
 
 public class ObjectStateContract
 {

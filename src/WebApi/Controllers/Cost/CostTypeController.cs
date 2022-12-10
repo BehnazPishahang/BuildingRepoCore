@@ -1,5 +1,4 @@
 ﻿using Application.Cost;
-using Controllers.Cost;
 using Domain.Cost;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
@@ -9,8 +8,9 @@ using WebApi.Controllers.BaseController;
 namespace WebApi.Controllers.Cost;
 
 
-public class CostTypeController : BaseController<CostTypeContract>
+public class CostTypeController : BaseController<CostTypeRequest, CostTypeResponse>
 {
+
     private readonly ICostTypeRepository _costTypeRepository;
     public CostTypeController(ICostTypeRepository costTypeRepository)
     {
@@ -19,27 +19,37 @@ public class CostTypeController : BaseController<CostTypeContract>
 
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<CostTypeContract> GetById(CostTypeContract request)
+    public override async Task<CostTypeResponse> GetById(CostTypeRequest request)
     {
-        var theCostType = await _costTypeRepository.GetById(request.Id);
-        
-        return new CostTypeContract()
+        var theCostType = await _costTypeRepository.GetById(request.theCostTypeContract.Id);
+
+        return new CostTypeResponse()
         {
-            Code = theCostType.Code,
-            Title = theCostType.Title
+            theCostTypeContractList = new()
+            {
+                new CostTypeContract()
+                {
+                    Code = theCostType.Code,
+                    Title = theCostType.Title
+                }
+            }
+            
         };
     }
 
     [HttpGet]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<List<CostTypeContract>> GetAll()
+    public override async Task<CostTypeResponse> GetAll()
     {
         var theCostTypeList = await _costTypeRepository.GetAll();
 
-        return theCostTypeList.Select(x => new CostTypeContract()
+        return new CostTypeResponse()
         {
-            Code = x.Code,
-            Title = x.Title
-        }).ToList();
+            theCostTypeContractList = theCostTypeList.Select(x => new CostTypeContract()
+            {
+                Code = x.Code,
+                Title = x.Title
+            }).ToList()
+        };
     }
 }

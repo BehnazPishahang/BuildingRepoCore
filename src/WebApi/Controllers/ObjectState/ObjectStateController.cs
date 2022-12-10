@@ -1,12 +1,12 @@
 ﻿using Application.ObjectState;
-using Controllers.ObjectState;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.ObjectState;
 
-public class ObjectStateController : BaseController<ObjectStateContract>
+public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse>
 {
     private readonly IObjectStateRepository _objectStateRepository; 
     public ObjectStateController(IObjectStateRepository objectStateRepository)
@@ -16,27 +16,36 @@ public class ObjectStateController : BaseController<ObjectStateContract>
     
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<ObjectStateContract> GetById(ObjectStateContract request)
+    public override async Task<ObjectStateResponse> GetById(ObjectStateRequest request)
     {
-        var theObjectStateType = await _objectStateRepository.GetById(request.Id);
+        var theObjectStateType = await _objectStateRepository.GetById(request.theObjectStateContract.Id);
         
-        return new ObjectStateContract()
+        return new ObjectStateResponse()
         {
-            Code = theObjectStateType.Code,
-            Title = theObjectStateType.Title
+            theObjectStateContractList = new List<ObjectStateContract>()
+            {
+                new ObjectStateContract()
+                {
+                    Code = theObjectStateType.Code,
+                    Title = theObjectStateType.Title
+                }
+            },
         };
     }
 
     [HttpGet]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<List<ObjectStateContract>> GetAll()
+    public override async Task<ObjectStateResponse> GetAll()
     {
         var theObjectStateList = await _objectStateRepository.GetAll();
 
-        return theObjectStateList.Select(x => new ObjectStateContract()
+        return new ObjectStateResponse()
         {
-            Code = x.Code,
-            Title = x.Title
-        }).ToList();
+            theObjectStateContractList = theObjectStateList.Select(x => new ObjectStateContract()
+            {
+                Code = x.Code,
+                Title = x.Title
+            }).ToList()
+        } ;
     }
 }

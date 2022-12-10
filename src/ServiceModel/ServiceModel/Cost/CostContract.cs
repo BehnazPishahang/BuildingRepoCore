@@ -1,6 +1,6 @@
-using Domain.Building;
 using Domain.Cost;
-using Domain.ObjectState;
+using ServiceModel.Building;
+using ServiceModel.ObjectState;
 
 namespace ServiceModel.Cost;
 
@@ -18,9 +18,9 @@ public class CostContract
 
     public decimal? CashAmount { get; set; }
 
-    public Building? TheBuilding { get; set; }
+    public BuildingContract? TheBuilding { get; set; }
     
-    public CostType? TheCostType { get; set; }
+    public CostTypeContract? TheCostType { get; set; }
     
-    public ObjectState? TheObjectState { get; set; }
+    public ObjectStateContract? TheObjectState { get; set; }
 }
