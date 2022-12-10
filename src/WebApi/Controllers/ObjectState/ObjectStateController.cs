@@ -1,23 +1,42 @@
-﻿using Building.ServiceModel.ObjectState;
-using Domain.ObjectState;
+﻿using Application.ObjectState;
+using Controllers.ObjectState;
+using Microsoft.AspNetCore.Mvc;
 using Persistence;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.ObjectState;
 
-public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse> 
+public class ObjectStateController : BaseController<ObjectStateContract>
 {
-    public ObjectStateController(DataContext context) : base(context)
+    private readonly IObjectStateRepository _objectStateRepository; 
+    public ObjectStateController(IObjectStateRepository objectStateRepository)
     {
+        _objectStateRepository = objectStateRepository;
+    }
+    
+    [HttpPost]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<ObjectStateContract> GetById(ObjectStateContract request)
+    {
+        var theObjectStateType = await _objectStateRepository.GetById(request.Id);
+        
+        return new ObjectStateContract()
+        {
+            Code = theObjectStateType.Code,
+            Title = theObjectStateType.Title
+        };
     }
 
-    protected override Task<ObjectStateResponse> GetById(ObjectStateRequest request)
+    [HttpGet]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<List<ObjectStateContract>> GetAll()
     {
-        throw new NotImplementedException();
-    }
+        var theObjectStateList = await _objectStateRepository.GetAll();
 
-    protected override Task<ObjectStateResponse> GetAll()
-    {
-        throw new NotImplementedException();
+        return theObjectStateList.Select(x => new ObjectStateContract()
+        {
+            Code = x.Code,
+            Title = x.Title
+        }).ToList();
     }
 }

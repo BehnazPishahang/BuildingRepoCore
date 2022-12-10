@@ -6,16 +6,9 @@ using Persistence;
 namespace WebApi.Controllers.BaseController;
 
 
-public abstract class BaseController<TInput, TOutput> : ControllerBase
+public abstract class BaseController<TContract> : ControllerBase
 {
-    // protected readonly GenericRepository<TEntity> _genericRepository;
+    public abstract Task<TContract> GetById(TContract request);
     
-    protected BaseController(DataContext context)
-    {
-        // _genericRepository = new GenericRepository<TEntity>(context);
-    }
-
-    protected abstract Task<TOutput> GetById(TInput request);
-    
-    protected abstract Task<TOutput> GetAll();
+    public abstract Task<List<TContract>> GetAll();
 }

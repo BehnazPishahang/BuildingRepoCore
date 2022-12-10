@@ -1,24 +1,45 @@
-﻿using Building.ServiceModel.Cost;
+﻿using Application.Cost;
+using Controllers.Cost;
 using Domain.Cost;
+using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using ServiceModel.Cost;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.Cost;
 
 
-public class CostTypeController : BaseController<CostTypeRequest, CostTypeResponse>
+public class CostTypeController : BaseController<CostTypeContract>
 {
-    public CostTypeController(DataContext context) : base(context)
+    private readonly ICostTypeRepository _costTypeRepository;
+    public CostTypeController(ICostTypeRepository costTypeRepository)
     {
+        _costTypeRepository = costTypeRepository;
     }
 
-    protected override Task<CostTypeResponse> GetById(CostTypeRequest request)
+    [HttpPost]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<CostTypeContract> GetById(CostTypeContract request)
     {
-        throw new NotImplementedException();
+        var theCostType = await _costTypeRepository.GetById(request.Id);
+        
+        return new CostTypeContract()
+        {
+            Code = theCostType.Code,
+            Title = theCostType.Title
+        };
     }
 
-    protected override Task<CostTypeResponse> GetAll()
+    [HttpGet]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<List<CostTypeContract>> GetAll()
     {
-        throw new NotImplementedException();
+        var theCostTypeList = await _costTypeRepository.GetAll();
+
+        return theCostTypeList.Select(x => new CostTypeContract()
+        {
+            Code = x.Code,
+            Title = x.Title
+        }).ToList();
     }
 }

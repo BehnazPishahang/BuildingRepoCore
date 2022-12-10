@@ -21,6 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Building.ServiceModel\Building.ServiceModel.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\ServiceModel\ServiceModel\ServiceModel.csproj" />
   </ItemGroup>
 
 </Project>
