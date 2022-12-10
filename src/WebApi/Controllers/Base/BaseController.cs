@@ -10,7 +10,7 @@ public abstract class BaseController<TInput, TOutput> : ControllerBase
 {
     // protected readonly GenericRepository<TEntity> _genericRepository;
     
-    protected BaseController(DataContext context)
+    protected BaseController(/*DataContext context*/)
     {
         // _genericRepository = new GenericRepository<TEntity>(context);
     }

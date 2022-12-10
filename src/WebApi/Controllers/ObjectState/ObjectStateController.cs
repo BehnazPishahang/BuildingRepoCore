@@ -7,7 +7,7 @@ namespace WebApi.Controllers.ObjectState;
 
 public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse> 
 {
-    public ObjectStateController(DataContext context) : base(context)
+    public ObjectStateController() 
     {
     }
 

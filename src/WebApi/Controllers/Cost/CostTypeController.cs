@@ -8,7 +8,7 @@ namespace WebApi.Controllers.Cost;
 
 public class CostTypeController : BaseController<CostTypeRequest, CostTypeResponse>
 {
-    public CostTypeController(DataContext context) : base(context)
+    public CostTypeController() 
     {
     }
 

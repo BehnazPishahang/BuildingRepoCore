@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Building.ServiceModel\Building.ServiceModel.csproj" />
+    <ProjectReference Include="..\Building.ServiceModel\ServiceModel.csproj" />
   </ItemGroup>
 
 </Project>
