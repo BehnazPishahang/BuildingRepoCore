@@ -1,9 +1,6 @@
 ﻿using Application.Cost;
 using Microsoft.AspNetCore.Mvc;
-using Persistence;
-using ServiceModel.Building;
 using ServiceModel.Cost;
-using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.Cost;
@@ -34,9 +31,9 @@ public class CostController : BaseController<CostRequest, CostResponse>
                     EventDate = theCost.EventDate,
                     FromDate = theCost.FromDate,
                     ToDate = theCost.ToDate,
-                    TheBuilding = null,
-                    TheCostType = null,
-                    TheObjectState = null,
+                    BuildingId = theCost.BuildingId.ToString(),
+                    CostTypeId = theCost.CostTypeId.ToString(),
+                    ObjectStateId = theCost.ObjectStateId.ToString(),
                 }
             }
         };
@@ -57,9 +54,31 @@ public class CostController : BaseController<CostRequest, CostResponse>
                 EventDate = x.EventDate,
                 FromDate = x.FromDate,
                 ToDate = x.ToDate,
-                TheBuilding = null,
-                TheCostType = null,
-                TheObjectState = null,
+                BuildingId = x.BuildingId.ToString(),
+                CostTypeId = x.CostTypeId.ToString(),
+                ObjectStateId = x.ObjectStateId.ToString(),
+            }).ToList()
+        };
+    }
+    
+    [HttpPost]
+    [Route("api/v1/[controller]/[action]")]
+    public async Task<CostResponse> GetByDate(GetByDateRequest request)
+    {
+        var theCostList = await _costRepository.GetByDate(request.date);
+
+        return new CostResponse()
+        {
+            theCostContractList = theCostList.Select(x => new CostContract()
+            {
+                Amount = x.Amount,
+                CashAmount = x.CashAmount,
+                EventDate = x.EventDate,
+                FromDate = x.FromDate,
+                ToDate = x.ToDate,
+                BuildingId = x.BuildingId.ToString(),
+                CostTypeId = x.CostTypeId.ToString(),
+                ObjectStateId = x.ObjectStateId.ToString(),
             }).ToList()
         };
     }

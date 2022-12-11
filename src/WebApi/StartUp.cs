@@ -7,12 +7,12 @@ using Application.Cost;
 using Application.ObjectState;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApi
 {
