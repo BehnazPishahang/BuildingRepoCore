@@ -1,23 +1,51 @@
-﻿using Building.ServiceModel.ObjectState;
-using Domain.ObjectState;
+﻿using Application.ObjectState;
+using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.ObjectState;
 
-public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse> 
+public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse>
 {
-    public ObjectStateController() 
+    private readonly IObjectStateRepository _objectStateRepository; 
+    public ObjectStateController(IObjectStateRepository objectStateRepository)
     {
+        _objectStateRepository = objectStateRepository;
+    }
+    
+    [HttpPost]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<ObjectStateResponse> GetById(ObjectStateRequest request)
+    {
+        var theObjectStateType = await _objectStateRepository.GetById(request.theObjectStateContract.Id);
+        
+        return new ObjectStateResponse()
+        {
+            theObjectStateContractList = new List<ObjectStateContract>()
+            {
+                new ObjectStateContract()
+                {
+                    Code = theObjectStateType.Code,
+                    Title = theObjectStateType.Title
+                }
+            },
+        };
     }
 
-    protected override Task<ObjectStateResponse> GetById(ObjectStateRequest request)
+    [HttpGet]
+    [Route("api/v1/[controller]/[action]")]
+    public override async Task<ObjectStateResponse> GetAll()
     {
-        throw new NotImplementedException();
-    }
+        var theObjectStateList = await _objectStateRepository.GetAll();
 
-    protected override Task<ObjectStateResponse> GetAll()
-    {
-        throw new NotImplementedException();
+        return new ObjectStateResponse()
+        {
+            theObjectStateContractList = theObjectStateList.Select(x => new ObjectStateContract()
+            {
+                Code = x.Code,
+                Title = x.Title
+            }).ToList()
+        } ;
     }
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceModel.Building
 {
-    public class BuildingResponse
+    public class BuildingRequest
     {
+        public BuildingContract theBuildingContract { get; set; }
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Cost;
+using Application.ObjectState;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,10 @@ namespace WebApi
             {
                 opt.UseSqlServer(this._config.GetConnectionString("LocalDataBase"));
             });
+            
+            services.AddScoped<ICostRepository, CostRepository>();
+            services.AddScoped<ICostTypeRepository, CostTypeRepository>();
+            services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

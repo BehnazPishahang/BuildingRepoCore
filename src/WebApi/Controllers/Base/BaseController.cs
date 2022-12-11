@@ -8,14 +8,7 @@ namespace WebApi.Controllers.BaseController;
 
 public abstract class BaseController<TInput, TOutput> : ControllerBase
 {
-    // protected readonly GenericRepository<TEntity> _genericRepository;
+    public abstract Task<TOutput> GetById(TInput request);
     
-    protected BaseController(/*DataContext context*/)
-    {
-        // _genericRepository = new GenericRepository<TEntity>(context);
-    }
-
-    protected abstract Task<TOutput> GetById(TInput request);
-    
-    protected abstract Task<TOutput> GetAll();
+    public abstract Task<TOutput> GetAll();
 }

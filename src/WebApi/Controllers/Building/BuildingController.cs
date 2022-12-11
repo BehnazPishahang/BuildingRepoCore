@@ -15,12 +15,12 @@ namespace WebApi.Controllers.Building
         }
 
 
-        protected override Task<BuildingResponse> GetAll()
+        public override Task<BuildingResponse> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        protected override Task<BuildingResponse> GetById(BuildingRequest request)
+        public override Task<BuildingResponse> GetById(BuildingRequest request)
         {
             throw new NotImplementedException();
         }
