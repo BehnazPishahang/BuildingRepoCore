@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Building;
 using Application.Cost;
 using Application.ObjectState;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace WebApi
             services.AddScoped<ICostRepository, CostRepository>();
             services.AddScoped<ICostTypeRepository, CostTypeRepository>();
             services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
+            services.AddScoped<IBuildingRepository, BuildingRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

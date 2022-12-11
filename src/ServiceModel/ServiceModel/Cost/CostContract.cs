@@ -6,7 +6,7 @@ namespace ServiceModel.Cost;
 
 public class CostContract
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     
     public decimal? Amount { get; set; }
 

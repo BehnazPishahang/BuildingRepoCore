@@ -8,6 +8,12 @@ namespace ServiceModel.Building
 {
     public class BuildingRequest
     {
+        public BuildingRequest()
+        {
+            this.theBuildingContract = new BuildingContract();
+        }
         public BuildingContract theBuildingContract { get; set; }
     }
+    
+  
 }

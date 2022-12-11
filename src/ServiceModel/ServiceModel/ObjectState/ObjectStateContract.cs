@@ -2,7 +2,7 @@ namespace ServiceModel.ObjectState;
 
 public class ObjectStateContract
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     
     public string Code { get; set; }
 

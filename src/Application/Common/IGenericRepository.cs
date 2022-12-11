@@ -10,7 +10,7 @@ namespace Application.Common
     public interface IGenericRepository<T> where T : class
     {
         
-        Task<T> GetById(string id);
+        Task<T> GetById(Guid id);
         Task Add(T entity);
         Task<IEnumerable<T>> GetAll();
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);

@@ -16,6 +16,13 @@ namespace Application.Building
         {
 
         }
+        
+        public async Task<IEnumerable<Domain.Building.Building>> GetbyCityName(string CityName)
+        {
+            return await _context.Set<Domain.Building.Building>().Where((a=> a.CityName==CityName))
+                .Include(b => b.TheCostList)
+                .ToListAsync();
+        }
 
     }
 }
