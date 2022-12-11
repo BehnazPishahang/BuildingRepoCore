@@ -1,4 +1,3 @@
-using Domain.Cost;
 using ServiceModel.Building;
 using ServiceModel.ObjectState;
 
@@ -20,7 +19,13 @@ public class CostContract
 
     public BuildingContract? TheBuilding { get; set; }
     
+    public string? BuildingId { get; set; }
+    
     public CostTypeContract? TheCostType { get; set; }
     
+    public string? CostTypeId { get; set; }
+    
     public ObjectStateContract? TheObjectState { get; set; }
+    
+    public string? ObjectStateId { get; set; }
 }
