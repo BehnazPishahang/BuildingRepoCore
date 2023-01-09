@@ -1,47 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Persistence;
+﻿using Application.Building;
+using Application.Cost;
+using Application.ObjectState;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Persistence;
 
-namespace WebApi
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+builder.Services.AddSwaggerGen(c =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
-            
-            using var scope = host.Services.CreateScope(); 
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestWebApi", Version = "v1" });
+});
 
-            var services = scope.ServiceProvider;
+builder.Services.AddDbContext<DataContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("LocalDataBase"));
+});
 
-            try
-            {
-                var context = services.GetRequiredService<DataContext>();
-                context.Database.Migrate();
-            }
-            catch (Exception ex)
-            {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occured during migraions");
-                throw;
-            }
-            host.Run();
-        }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args).
-        ConfigureWebHostDefaults( webBuilder => 
-        {
-            webBuilder.UseStartup<StartUp>();
-        });
-    }
-    
-}
 
+
+builder.Services.AddScoped<ICostRepository, CostRepository>();
+builder.Services.AddScoped<ICostTypeRepository, CostTypeRepository>();
+builder.Services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
+builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+var app = builder.Build();
+
+app.UseDeveloperExceptionPage();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi TestWebApi v1");
+});
+
+
+app.UseAuthorization();
+
+
+
+app.UseRouting();
+
+app.UseEndpoints(endpoint =>
+{
+    endpoint.MapControllers();
+});
+
+app.Run();

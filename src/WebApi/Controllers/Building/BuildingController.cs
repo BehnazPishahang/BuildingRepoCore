@@ -22,12 +22,14 @@ namespace WebApi.Controllers.Building
         public override async Task<BuildingResponse> GetById(BuildingRequest request)
         {
             var Onebuilding = await _buildingRepository.GetById(request.theBuildingContract.Id);
+            
             return new BuildingResponse()
             {
                 theBuildingContractList = new List<BuildingContract>()
                 {
                     new BuildingContract()
                     {
+                        
                         Address = Onebuilding.Address,
                         Plaque = Onebuilding.Plaque,
                         Title = Onebuilding.Title,
