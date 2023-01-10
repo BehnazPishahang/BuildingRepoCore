@@ -20,7 +20,6 @@ namespace Application
 
         private static void AddAssemblyRepositories(System.Reflection.Assembly assembly, IServiceCollection serviceCollection)
         {
-            var c = assembly;
             foreach (Type repositoryClass in assembly.GetTypes().Where(a => a.Name.Contains("Repository")))
             {
                 if (repositoryClass.IsGenericType)
