@@ -18,26 +18,17 @@ builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("LocalDataBase"));
 });
 
-
-
-
 builder.Services.AddScoped<ICostRepository, CostRepository>();
 builder.Services.AddScoped<ICostTypeRepository, CostTypeRepository>();
 builder.Services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi TestWebApi v1");
 });
-
-
-app.UseAuthorization();
-
-
 
 app.UseRouting();
 
