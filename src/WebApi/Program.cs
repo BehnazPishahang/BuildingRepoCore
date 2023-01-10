@@ -28,19 +28,14 @@ builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository)
 //builder.Services.AddScoped<ICostTypeRepository, CostTypeRepository>();
 //builder.Services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
 //builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+
 var app = builder.Build();
 
-app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi TestWebApi v1");
 });
-
-
-app.UseAuthorization();
-
-
 
 app.UseRouting();
 
