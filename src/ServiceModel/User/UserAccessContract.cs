@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceModel.User
 {
-    public class UseraccessContract
+    public class UserAccessContract
     {
         public Guid Id { get; set; }
 

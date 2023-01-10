@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Domain.Enumerations;
+﻿
+using Commons;
 
 namespace ServiceModel.User
 {
@@ -23,7 +19,7 @@ namespace ServiceModel.User
 
         public string PassWord { get; set; }
 
-        public SexType Sex { get; set; }
+        public Enumerations.SexType Sex { get; set; }
 
         public string? MobileNumber { get; set; }
     }
