@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Domain.Enumerations;
+using Commons;
 
 namespace Domain.User
 {
@@ -23,7 +23,7 @@ namespace Domain.User
 
         public string PassWord { get; set; }
 
-        public SexType Sex { get; set; }
+        public Enumerations.SexType Sex { get; set; }
 
         public string? MobileNumber { get; set; }
     }

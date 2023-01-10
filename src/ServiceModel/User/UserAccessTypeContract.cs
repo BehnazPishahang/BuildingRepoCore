@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Domain.Enumerations;
+using Commons;
 
 namespace ServiceModel.User
 {
@@ -15,6 +15,6 @@ namespace ServiceModel.User
 
         public string Title { get; set; }
 
-        public State State { get; set; }
+        public Enumerations.State State { get; set; }
     }
 }
