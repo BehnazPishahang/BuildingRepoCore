@@ -1,6 +1,7 @@
 ﻿using Domain.Building;
 using Domain.Cost;
 using Domain.ObjectState;
+using Domain.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,13 @@ namespace Persistence
         public DbSet<CostType> CostTypes { get; set; }
 
         public DbSet<ObjectState> ObjectStates { get; set; }
+
+        public DbSet<UserAccessType> UserAccessTypes { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserAccess> UserAccesses { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,15 +80,65 @@ namespace Persistence
                 Code = "0002",
                 Title = "قبض برق",
             };
-            
+
+            var UserOne = new User()
+            {
+                Id = new Guid("75497455-5E77-42FA-87DA-125B7686C3F2"),
+                Name = "مجید",
+                Family = "عباسی",
+                StartDate = "1401/10/20",
+                EndDate = "9999/99/99",
+                MobileNumber = "09125873154",
+                PassWord = Commons.Extensions.StringExtensions.ToHash("1234"),
+                NationalCode = "048403716",
+                Sex = Domain.Enumerations.SexType.Male
+            };
+
+            var Usertwo = new User()
+            {
+                Id = new Guid("D6023CD6-FDE2-423D-A8AC-E2CFBD252BA3"),
+                Name = "بهناز",
+                Family = "پیشاهنگ",
+                StartDate = "1401/10/20",
+                EndDate = "9999/99/99",
+                MobileNumber = "09359384485",
+                PassWord = Commons.Extensions.StringExtensions.ToHash("1234"),
+                NationalCode = "1810089666",
+                Sex = Domain.Enumerations.SexType.Female
+            };
+
+            var UserAccessTypeOne = new UserAccessType()
+            {
+                Id = new Guid("6524FA96-E320-413B-8695-8467C94465EE"),
+                Code = "0001",
+                Title = "مدیر ساختمان",
+                State = Domain.Enumerations.State.Active
+
+            };
+
+            var UserAccessTypetwo = new UserAccessType()
+            {
+                Id = new Guid("FA1D726C-615E-4E89-9AED-477E7CBD7E2B"),
+                Code = "0002",
+                Title = "اعضای ساختمان",
+                State = Domain.Enumerations.State.Active
+
+            };
+
             modelBuilder.Entity<Building>().HasData(buildingOne);
             modelBuilder.Entity<Building>().HasData(buildingTwo);
 
             modelBuilder.Entity<ObjectState>().HasData(objectStateOne);
             modelBuilder.Entity<ObjectState>().HasData(objectStateTwo);
-            
+
             modelBuilder.Entity<CostType>().HasData(costTypeOne);
             modelBuilder.Entity<CostType>().HasData(costTypeTwo);
+
+            modelBuilder.Entity<User>().HasData(UserOne);
+            modelBuilder.Entity<User>().HasData(Usertwo);
+
+            modelBuilder.Entity<UserAccessType>().HasData(UserAccessTypeOne);
+            modelBuilder.Entity<UserAccessType>().HasData(UserAccessTypetwo);
 
             modelBuilder.Entity<Cost>()
                 .HasData(
@@ -96,7 +154,7 @@ namespace Persistence
                         ObjectStateId = Guid.Parse("80449D6D-A150-4F8F-A283-5BED489DAF19"),
                         BuildingId = Guid.Parse("6BF35BE1-1677-4245-BBA0-622EE23CE9D7")
                     });
-            
+
             modelBuilder.Entity<Cost>()
                 .HasData(
                     new Cost()
@@ -109,6 +167,32 @@ namespace Persistence
                         ObjectStateId = Guid.Parse("20F179EF-AB00-40A1-A1A3-BC0E2444BC85"),
                         BuildingId = Guid.Parse("5BC530DB-E4CE-4046-AC4A-E0559B48D1A8")
                     });
+
+            modelBuilder.Entity<UserAccess>()
+              .HasData(
+                  new UserAccess()
+                  {
+                      Id = Guid.NewGuid(),
+                      UserId = Guid.Parse("75497455-5E77-42FA-87DA-125B7686C3F2"),
+                      UserAccessTypeId = Guid.Parse("6524FA96-E320-413B-8695-8467C94465EE"),
+                      StartDate = "1401/10/20",
+                      EndDate = "9999/99/99",
+                      SignText = "مجید عباسی _ مدیر ساختمان"
+
+                  });
+
+            modelBuilder.Entity<UserAccess>()
+             .HasData(
+                 new UserAccess()
+                 {
+                     Id = Guid.NewGuid(),
+                     UserId = Guid.Parse("D6023CD6-FDE2-423D-A8AC-E2CFBD252BA3"),
+                     UserAccessTypeId = Guid.Parse("FA1D726C-615E-4E89-9AED-477E7CBD7E2B"),
+                     StartDate = "1401/10/20",
+                     EndDate = "9999/99/99",
+                     SignText = "بهناز پیشاهنگ _ اعضای ساختمان"
+
+                 });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
