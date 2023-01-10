@@ -1,4 +1,6 @@
-﻿using Application.Building;
+﻿
+using Application;
+using Application.Building;
 using Application.Cost;
 using Application.ObjectState;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +20,15 @@ builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("LocalDataBase"));
 });
 
-builder.Services.AddScoped<ICostRepository, CostRepository>();
-builder.Services.AddScoped<ICostTypeRepository, CostTypeRepository>();
-builder.Services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
-builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
+
+
+
+//builder.Services.AddScoped<ICostRepository, CostRepository>();
+//builder.Services.AddScoped<ICostTypeRepository, CostTypeRepository>();
+//builder.Services.AddScoped<IObjectStateRepository, ObjectStateRepository>();
+//builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+
 var app = builder.Build();
 
 app.UseSwagger();

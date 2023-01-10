@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> : IGenericRepository
     {
         
         Task<T> GetById(Guid id);
@@ -16,5 +16,7 @@ namespace Application.Common
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);
     }
 
-   
+    public interface IGenericRepository
+    {
+    }
 }
