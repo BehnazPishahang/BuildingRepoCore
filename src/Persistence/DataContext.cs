@@ -1,4 +1,5 @@
-﻿using Domain.Building;
+﻿using Commons;
+using Domain.Building;
 using Domain.Cost;
 using Domain.ObjectState;
 using Domain.User;
@@ -91,7 +92,7 @@ namespace Persistence
                 MobileNumber = "09125873154",
                 PassWord = Commons.Extensions.StringExtensions.ToHash("1234"),
                 NationalCode = "048403716",
-                Sex = Domain.Enumerations.SexType.Male
+                Sex = Enumerations.SexType.Male
             };
 
             var Usertwo = new User()
@@ -104,7 +105,7 @@ namespace Persistence
                 MobileNumber = "09359384485",
                 PassWord = Commons.Extensions.StringExtensions.ToHash("1234"),
                 NationalCode = "1810089666",
-                Sex = Domain.Enumerations.SexType.Female
+                Sex = Enumerations.SexType.Female
             };
 
             var UserAccessTypeOne = new UserAccessType()
@@ -112,7 +113,7 @@ namespace Persistence
                 Id = new Guid("6524FA96-E320-413B-8695-8467C94465EE"),
                 Code = "0001",
                 Title = "مدیر ساختمان",
-                State = Domain.Enumerations.State.Active
+                State = Enumerations.State.Active
 
             };
 
@@ -121,7 +122,7 @@ namespace Persistence
                 Id = new Guid("FA1D726C-615E-4E89-9AED-477E7CBD7E2B"),
                 Code = "0002",
                 Title = "اعضای ساختمان",
-                State = Domain.Enumerations.State.Active
+                State = Enumerations.State.Active
 
             };
 
