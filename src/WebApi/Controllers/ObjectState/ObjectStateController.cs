@@ -1,5 +1,7 @@
 ﻿using Application.ObjectState;
+using Building.Core.WebApi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Persistence;
 using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
@@ -8,10 +10,13 @@ namespace WebApi.Controllers.ObjectState;
 
 public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse>
 {
-    private readonly IObjectStateRepository _objectStateRepository; 
-    public ObjectStateController(IObjectStateRepository objectStateRepository)
+    private readonly IObjectStateRepository _objectStateRepository;
+    private readonly AppConfiguration _appConfiguration;
+
+    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options)
     {
         _objectStateRepository = objectStateRepository;
+        _appConfiguration = options.Value;
     }
     
     [HttpPost]
