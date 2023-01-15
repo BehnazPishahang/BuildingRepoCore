@@ -1,7 +1,9 @@
 ﻿using Application;
 using Commons;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence;
 
@@ -23,14 +25,14 @@ public static class SystemConfiguration
                 Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
             });
             c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference { Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme, Id = "Bearer" }
-            }, new List<string>()
-        }
-    });
+                {
+                    new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        Reference = new Microsoft.OpenApi.Models.OpenApiReference { Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme, Id = "Bearer" }
+                    }, new List<string>()
+                }
+            });
         });
 
         var sqlConnectionBuilder = new SqlConnectionStringBuilder()
@@ -47,9 +49,29 @@ public static class SystemConfiguration
             opt.UseSqlServer(sqlConnectionBuilder.ConnectionString);
         });
 
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(option =>
+        {
+            var key = System.Text.Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Configuration:JwtConfig:Secret"));
+            option.SaveToken = true;
+            option.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false, // for dev
+                ValidateAudience = false, // for dev
+                RequireExpirationTime = false, // for dev -- needs to be updated when refresh token is added
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+        
         builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
-
-
 
         builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
 
@@ -65,6 +87,9 @@ public static class SystemConfiguration
         });
 
         app.UseRouting();
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoint =>
         {
