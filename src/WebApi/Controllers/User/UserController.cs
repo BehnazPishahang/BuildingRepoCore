@@ -1,4 +1,5 @@
 using Application.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceModel.User;
 using WebApi.Controllers.BaseController;
@@ -15,6 +16,7 @@ public class UserController : BaseController<UserRequest, UserResponse>
     }
     
     [HttpPost]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserResponse> GetById([FromBody] UserRequest request)
     {
@@ -39,6 +41,7 @@ public class UserController : BaseController<UserRequest, UserResponse>
     }
 
     [HttpGet]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserResponse> GetAll()
     {

@@ -1,5 +1,6 @@
 ﻿using Application.ObjectState;
 using Building.Core.WebApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Persistence;
@@ -20,6 +21,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     }
     
     [HttpPost]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetById([FromBody] ObjectStateRequest request)
     {
@@ -40,6 +42,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     }
 
     [HttpGet]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetAll()
     {

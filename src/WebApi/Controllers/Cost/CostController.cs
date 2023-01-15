@@ -1,4 +1,5 @@
 ﻿using Application.Cost;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceModel.Cost;
 using WebApi.Controllers.BaseController;
@@ -15,6 +16,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     }
 
     [HttpPost]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostResponse> GetById([FromBody] CostRequest request)
     {
@@ -40,6 +42,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     }
 
     [HttpGet]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostResponse> GetAll()
     {
@@ -62,6 +65,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     }
     
     [HttpPost]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public async Task<CostResponse> GetByDate([FromBody] GetByDateRequest request)
     {

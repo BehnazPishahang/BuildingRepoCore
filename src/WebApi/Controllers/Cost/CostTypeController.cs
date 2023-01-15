@@ -1,5 +1,6 @@
 ﻿using Application.Cost;
 using Domain.Cost;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
 using ServiceModel.Cost;
@@ -18,6 +19,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
     }
 
     [HttpPost]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetById([FromBody] CostTypeRequest request)
     {
@@ -38,6 +40,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
     }
 
     [HttpGet]
+    [Authorize]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetAll()
     {
