@@ -16,7 +16,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
 
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<CostResponse> GetById(CostRequest request)
+    public override async Task<CostResponse> GetById([FromBody] CostRequest request)
     {
         var theCost = await _costRepository.GetById(request.theCostContract.Id);
 
@@ -63,7 +63,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public async Task<CostResponse> GetByDate(GetByDateRequest request)
+    public async Task<CostResponse> GetByDate([FromBody] GetByDateRequest request)
     {
         var theCostList = await _costRepository.GetByDate(request.date);
 

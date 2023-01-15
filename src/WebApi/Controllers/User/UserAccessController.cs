@@ -16,7 +16,7 @@ public class UserAccessController : BaseController<UserAccessRequest, UserAccess
     
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<UserAccessResponse> GetById(UserAccessRequest request)
+    public override async Task<UserAccessResponse> GetById([FromBody] UserAccessRequest request)
     {
         var theUserAccess = await _userAccessRepository.GetById(request.theUserAccessContract.Id);
         

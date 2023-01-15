@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Persistence;
 using ServiceModel.Building;
 using ServiceModel.Cost;
+using System.Security.Cryptography;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.Building
@@ -19,8 +20,10 @@ namespace WebApi.Controllers.Building
 
         [HttpGet]
         [Route("api/v1/[controller]/[action]")]
-        public override async Task<BuildingResponse> GetById(BuildingRequest request)
+        public override async Task<BuildingResponse> GetById([FromBody]  BuildingRequest request)
         {
+            
+
             var Onebuilding = await _buildingRepository.GetById(request.theBuildingContract.Id);
             
             return new BuildingResponse()
@@ -44,6 +47,9 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetAll()
         {
+
+            //HMACSHA256 hmac = new HMACSHA256();
+            //string key = Convert.ToBase64String(hmac.Key);
             var theBuildingList = await _buildingRepository.GetAll();
 
             return new BuildingResponse()
@@ -59,9 +65,9 @@ namespace WebApi.Controllers.Building
             };
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/v1/[controller]/[action]")]
-        public async Task<BuildingResponse> GetbyCityName(BuildingRequest request)
+        public async Task<BuildingResponse> GetbyCityName([FromBody]  BuildingRequest request)
         {
             var Thebuilding = await _buildingRepository.GetbyCityName(request.theBuildingContract.CityName);
             return new BuildingResponse()

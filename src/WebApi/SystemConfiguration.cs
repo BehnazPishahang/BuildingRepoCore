@@ -14,7 +14,23 @@ public static class SystemConfiguration
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestWebApi", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingWebApi", Version = "v1" });
+            c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme()
+            {
+                Description = "JWT Authorization header \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+            });
+            c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference { Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme, Id = "Bearer" }
+            }, new List<string>()
+        }
+    });
         });
 
         var sqlConnectionBuilder = new SqlConnectionStringBuilder()
@@ -32,15 +48,14 @@ public static class SystemConfiguration
         });
 
         builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
-        
-        
-        builder.Services.AddSingleton<AppConfiguration>(builder.Configuration.GetSection(AppConfiguration.Configuration).Get<AppConfiguration>());
-        
+
+
+
         builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
-        
+
         return builder.Build();
     }
-    
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         app.UseSwagger();
@@ -55,7 +70,7 @@ public static class SystemConfiguration
         {
             endpoint.MapControllers();
         });
-        
+
         return app;
     }
 }

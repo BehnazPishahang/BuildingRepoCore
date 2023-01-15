@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
+using static Commons.Constants;
 
 namespace Commons.Extensions
 {
     public static class StringExtensions
     {
+       
+
 
         public static bool IsValidNationalCode(this string nationalCode)
         {

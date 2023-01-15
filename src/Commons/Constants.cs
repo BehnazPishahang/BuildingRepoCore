@@ -1,4 +1,4 @@
-namespace Commons;
+﻿namespace Commons;
 
 public static class Constants
 {
@@ -21,4 +21,6 @@ public static class Constants
     {
         public const string Configuration = nameof(Configuration);
     }
+
+    
 }

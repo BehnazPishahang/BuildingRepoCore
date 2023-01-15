@@ -21,8 +21,9 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<ObjectStateResponse> GetById(ObjectStateRequest request)
+    public override async Task<ObjectStateResponse> GetById([FromBody] ObjectStateRequest request)
     {
+        
         var theObjectStateType = await _objectStateRepository.GetById(request.theObjectStateContract.Id);
         
         return new ObjectStateResponse()

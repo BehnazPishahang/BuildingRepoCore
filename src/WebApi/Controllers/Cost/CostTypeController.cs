@@ -19,7 +19,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
 
     [HttpPost]
     [Route("api/v1/[controller]/[action]")]
-    public override async Task<CostTypeResponse> GetById(CostTypeRequest request)
+    public override async Task<CostTypeResponse> GetById([FromBody] CostTypeRequest request)
     {
         var theCostType = await _costTypeRepository.GetById(request.theCostTypeContract.Id);
 

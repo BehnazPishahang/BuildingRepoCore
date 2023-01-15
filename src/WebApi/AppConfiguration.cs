@@ -2,10 +2,15 @@
 {
     public class AppConfiguration
     {
-        public const string Configuration = nameof(Configuration);
+
         public Logging Logging { get; set; }
         public string AllowedHosts { get; set; }
+        public JwtConfig JwtConfig { get; set; }
+        public string JWTTokenValidMinute { get; set; }
+        
     }
+
+
 
     public class Logging
     {
@@ -17,5 +22,10 @@
         public string Default { get; set; }
         public string MicrosoftAspNetCore { get; set; }
         public string MicrosoftHostingLifetime { get; set; }
+    }
+
+    public class JwtConfig
+    {
+        public string Secret { get; set; }
     }
 }

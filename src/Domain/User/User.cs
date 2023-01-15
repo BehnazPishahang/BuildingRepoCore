@@ -26,7 +26,11 @@ namespace Domain.User
         public Enumerations.SexType Sex { get; set; }
 
         public string? MobileNumber { get; set; }
+
+        [Description("دسترسي کاربر ")]
+        public virtual List<UserAccess>? TheUserAccessList { get; set; }
+
     }
 
-    
+
 }
