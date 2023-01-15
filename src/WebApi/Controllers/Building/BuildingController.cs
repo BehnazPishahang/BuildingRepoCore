@@ -22,6 +22,7 @@ namespace WebApi.Controllers.Building
         [HttpGet]
         [Authorize]
         [Route("api/v1/[controller]/[action]")]
+        [Authorize]
         public override async Task<BuildingResponse> GetById([FromBody]  BuildingRequest request)
         {
             
@@ -48,6 +49,7 @@ namespace WebApi.Controllers.Building
         [HttpGet]
         [Authorize]
         [Route("api/v1/[controller]/[action]")]
+        [Authorize]
         public override async Task<BuildingResponse> GetAll()
         {
 
