@@ -19,7 +19,7 @@ namespace WebApi.Controllers.Building
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetById([FromBody]  BuildingRequest request)
