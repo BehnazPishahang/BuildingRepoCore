@@ -1,7 +1,9 @@
 ﻿using Application.User;
 using Building.Core.WebApi;
 using Commons.Extensions;
+using Commons.ServiceResponse;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ServiceModel.Authentication;
@@ -95,7 +97,7 @@ namespace WebApi.Controllers.Authentication
 
         private string GetPermissions(Domain.User.User theUser)
         {
-            
+
             if (theUser.TheUserAccessList == null)
             {
                 return ";All;";
@@ -103,5 +105,34 @@ namespace WebApi.Controllers.Authentication
             var theUserAccessTypeCodes = string.Join(';', theUser.TheUserAccessList.Select(x => x.TheUserAccessType.Code));
             return theUserAccessTypeCodes;
         }
+
+        public class ActionFilterModelStateValidation : IActionFilter
+        {
+            public void OnActionExecuted(ActionExecutedContext context)
+            {
+                
+            }
+
+            public void OnActionExecuting(ActionExecutingContext context)
+            {
+                if (!context.ModelState.IsValid)
+                {
+                    var errors = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).ToList();
+                    var errorsConcatedWithNewLine = string.Join(System.Environment.NewLine, errors);
+
+                    context.Result = new BadRequestObjectResult(new
+                    {
+                        Result = new Result()
+                        {
+                            Code = 2000,
+                            Message = "درخواست ارسال شده معتبر نیست.",
+                            Description = errorsConcatedWithNewLine,
+                        }
+                    });
+                }
+            }
+        }
+
+        
     }
 }

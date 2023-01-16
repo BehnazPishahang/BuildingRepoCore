@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Persistence;
 using ServiceModel.Cost;
 using WebApi.Controllers.BaseController;
+using static WebApi.Controllers.Authentication.AuthenticationController;
 
 namespace WebApi.Controllers.Cost;
 
@@ -20,6 +21,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
 
     [HttpPost]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetById([FromBody] CostTypeRequest request)
     {
@@ -41,6 +43,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
 
     [HttpGet]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetAll()
     {

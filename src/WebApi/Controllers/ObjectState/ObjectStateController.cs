@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Persistence;
 using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
+using static WebApi.Controllers.Authentication.AuthenticationController;
 
 namespace WebApi.Controllers.ObjectState;
 
@@ -22,6 +23,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     
     [HttpPost]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetById([FromBody] ObjectStateRequest request)
     {
@@ -43,6 +45,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
 
     [HttpGet]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetAll()
     {

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using static WebApi.Controllers.Authentication.AuthenticationController;
 
 namespace Building.Core.WebApi;
 
@@ -74,6 +75,7 @@ public static class SystemConfiguration
         builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
 
         builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
+        builder.Services.AddScoped<ActionFilterModelStateValidation>();
 
         return builder.Build();
     }

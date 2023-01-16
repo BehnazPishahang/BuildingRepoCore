@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceModel.User;
 using WebApi.Controllers.BaseController;
+using static WebApi.Controllers.Authentication.AuthenticationController;
 
 namespace WebApi.Controllers.User;
 
@@ -17,6 +18,7 @@ public class UserAccessController : BaseController<UserAccessRequest, UserAccess
     
     [HttpPost]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserAccessResponse> GetById([FromBody] UserAccessRequest request)
     {
@@ -40,6 +42,7 @@ public class UserAccessController : BaseController<UserAccessRequest, UserAccess
 
     [HttpGet]
     [Authorize]
+    [ServiceFilter(typeof(ActionFilterModelStateValidation))]
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserAccessResponse> GetAll()
     {
