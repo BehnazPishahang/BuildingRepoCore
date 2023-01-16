@@ -4,6 +4,7 @@ using Persistence;
 using ServiceModel.Building;
 using ServiceModel.Cost;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 using WebApi.Controllers.BaseController;
 
 namespace WebApi.Controllers.Building
@@ -18,7 +19,8 @@ namespace WebApi.Controllers.Building
         }
 
 
-        [HttpGet]
+        [HttpPost]
+        [Authorize]
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetById([FromBody]  BuildingRequest request)
         {
@@ -44,6 +46,7 @@ namespace WebApi.Controllers.Building
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetAll()
         {
@@ -66,6 +69,7 @@ namespace WebApi.Controllers.Building
         }
 
         [HttpPost]
+        [Authorize]
         [Route("api/v1/[controller]/[action]")]
         public async Task<BuildingResponse> GetbyCityName([FromBody]  BuildingRequest request)
         {

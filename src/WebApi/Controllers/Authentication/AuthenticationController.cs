@@ -23,7 +23,7 @@ namespace WebApi.Controllers.Authentication
             _configuration = options;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/v1/Login")]
         public async Task<AuthenticationResponse> Login([FromBody] AuthenticationRequest request)
         {
@@ -65,7 +65,7 @@ namespace WebApi.Controllers.Authentication
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("IsDisable", "true"),
+                    // new Claim("IsDisable", "true"),
                     new Claim("permissions", this.GetPermissions(theUser)),
                     new Claim("Family", theUser.Family),
                     new Claim(JwtRegisteredClaimNames.Sub, theUser.Family),
