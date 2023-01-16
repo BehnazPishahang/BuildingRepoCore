@@ -1,4 +1,5 @@
 ﻿using Application;
+using Building.Core.WebApi.Middlewares;
 using Commons;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
@@ -92,6 +93,7 @@ public static class SystemConfiguration
         
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<AddAllowOriginMiddleware>();
 
         app.UseEndpoints(endpoint =>
         {
