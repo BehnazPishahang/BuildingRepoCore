@@ -14,5 +14,5 @@ public class BuildingContract
 
     public string? CityName { get; set; }
 
-    public virtual List<Domain.Cost.Cost>? TheCostList { get; set; }
+    public virtual List<ServiceModel.Cost.CostContract>? TheCostList { get; set; }
 }
