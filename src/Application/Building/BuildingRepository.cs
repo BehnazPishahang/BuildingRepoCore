@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using ServiceModel.Building;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,16 @@ namespace Application.Building
             }
             return Buildingresult;
 
+
+        }
+
+        public IEnumerable<BuildingContract> GetBuildingSelectLoading()
+        {
+            return _context.Set<Domain.Building.Building>().Select(x => new BuildingContract
+            {
+                CityName = x.CityName,
+                Title = x.Title
+            });
 
         }
 

@@ -160,5 +160,24 @@ namespace WebApi.Controllers.Building
                 }).ToList()
             };
         }
+
+        [HttpPost]
+        [Authorize]
+        [ServiceFilter(typeof(ActionFilterModelStateValidation))]
+        [Route("api/v1/[controller]/[action]")]
+        public async Task<BuildingResponse> GetBuildingSelectLoading()
+        {
+            var theBuildingList = _buildingRepository.GetBuildingSelectLoading();
+
+            return new BuildingResponse()
+            {
+                theBuildingContractList = theBuildingList.Select(x => new BuildingContract()
+                {
+                    Title = x.Title,
+                    CityName = x.CityName
+                    
+                }).ToList()
+            };
+        }
     }
 }

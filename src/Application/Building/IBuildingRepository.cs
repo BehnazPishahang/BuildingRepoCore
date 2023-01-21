@@ -1,5 +1,6 @@
 ﻿using Application.Common;
 using Persistence;
+using ServiceModel.Building;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace Application.Building
         Task<IEnumerable<Domain.Building.Building>> GetBuildingEager();
 
         IEnumerable<Domain.Building.Building> GetBuildingExplicit();
+
+        IEnumerable<BuildingContract> GetBuildingSelectLoading();
     }
 }
