@@ -17,6 +17,9 @@ namespace Application.Building
 
         IEnumerable<Domain.Building.Building> GetBuildingExplicit();
 
-        IEnumerable<BuildingContract> GetBuildingSelectLoading();
+        IEnumerable<ServiceModel.Building.Building> GetBuildingSelectLoading();
+
+        string AddBuilding(ServiceModel.Building.Building Request);
+        
     }
 }

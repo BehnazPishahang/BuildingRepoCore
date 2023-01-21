@@ -10,4 +10,11 @@ public class ObjectStateRepository : GenericRepository<Domain.ObjectState.Object
     {
 
     }
+
+    public Domain.ObjectState.ObjectState GetbyCode(string Code)
+    {
+        return _context.Set<Domain.ObjectState.ObjectState>().Where(a => a.Code == Code).FirstOrDefault();
+
+
+    }
 }

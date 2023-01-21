@@ -7,16 +7,19 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Controllers.BaseController;
 using static WebApi.Controllers.Authentication.AuthenticationController;
+using Application.ObjectState;
 
 namespace WebApi.Controllers.Building
 {
     public class BuildingController : BaseController<BuildingRequest, BuildingResponse>
     {
         private readonly IBuildingRepository _buildingRepository;
+        private readonly IObjectStateRepository _objectStateRepository;
 
-        public BuildingController(IBuildingRepository buildingRepository)
+        public BuildingController(IBuildingRepository buildingRepository, IObjectStateRepository objectStateRepository)
         {
             _buildingRepository = buildingRepository;
+            _objectStateRepository = objectStateRepository;
         }
 
 
@@ -32,9 +35,9 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = new List<BuildingContract>()
+                theBuildingContractList = new List<ServiceModel.Building.Building>()
                 {
-                    new BuildingContract()
+                    new ServiceModel.Building.Building()
                     {
 
                         Address = Onebuilding.Address,
@@ -64,7 +67,7 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = theBuildingList.Select(x => new BuildingContract()
+                theBuildingContractList = theBuildingList.Select(x => new Building()
                 {
                     Address = x.Address,
                     Plaque = x.Plaque,
@@ -85,7 +88,7 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = Thebuilding.Select(Onebuilding => new BuildingContract()
+                theBuildingContractList = Thebuilding.Select(Onebuilding => new Building()
                 {
                     Address = Onebuilding.Address,
                     Plaque = Onebuilding.Plaque,
@@ -106,7 +109,7 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = theBuildingList.Select(x => new BuildingContract()
+                theBuildingContractList = theBuildingList.Select(x => new Building()
                 {
                     Address = x.Address,
                     Plaque = x.Plaque,
@@ -116,10 +119,10 @@ namespace WebApi.Controllers.Building
                     TheCostList = x.TheCostList.Select(cost => new CostContract()
                     {
                         Amount = cost.Amount,
-                        EventDate=cost.EventDate,
-                        FromDate=cost.FromDate,
-                        ToDate=cost.ToDate,
-                        CashAmount=cost.CashAmount,
+                        EventDate = cost.EventDate,
+                        FromDate = cost.FromDate,
+                        ToDate = cost.ToDate,
+                        CashAmount = cost.CashAmount,
 
                     }).ToList()
                 }).ToList()
@@ -136,7 +139,7 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = theBuildingList.Select(x => new BuildingContract()
+                theBuildingContractList = theBuildingList.Select(x => new Building()
                 {
                     Address = x.Address,
                     Plaque = x.Plaque,
@@ -150,9 +153,9 @@ namespace WebApi.Controllers.Building
                         FromDate = cost.FromDate,
                         ToDate = cost.ToDate,
                         CashAmount = cost.CashAmount,
-                        TheCostType=new CostTypeContract
+                        TheCostType = new CostTypeContract
                         {
-                            Code=cost.TheCostType.Code,
+                            Code = cost.TheCostType.Code,
                             Title = cost.TheCostType.Title
                         }
 
@@ -171,13 +174,50 @@ namespace WebApi.Controllers.Building
 
             return new BuildingResponse()
             {
-                theBuildingContractList = theBuildingList.Select(x => new BuildingContract()
+                theBuildingContractList = theBuildingList.Select(x => new Building()
                 {
                     Title = x.Title,
                     CityName = x.CityName
-                    
+
                 }).ToList()
             };
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ServiceFilter(typeof(ActionFilterModelStateValidation))]
+        [Route("api/v1/[controller]/[action]")]
+        public string AddBuilding([FromBody] BuildingRequest request)
+        {
+
+            ServiceModel.Building.Building Onebuilding = new ServiceModel.Building.Building
+            {
+                Address = request.theBuildingContract.Address,
+                CityName = request.theBuildingContract.CityName,
+                FloorCount = request.theBuildingContract.FloorCount,
+                Plaque = request.theBuildingContract.Plaque,
+                Title = request.theBuildingContract.Title,
+                TheCostList = request.theBuildingContract.TheCostList.Select(cost => new CostContract()
+                {
+                    TheObjectState = new ServiceModel.ObjectState.ObjectStateContract
+                    {
+                        //Code = "",
+                        //Code = "",
+                        //Code = "",
+
+                    },
+                    Amount = cost.Amount,
+                    CashAmount = cost.CashAmount,
+                    EventDate = cost.EventDate,
+                    FromDate = cost.FromDate,
+                    ToDate = cost.ToDate
+
+
+                }).ToList()
+            };
+            string result = _buildingRepository.Add(Onebuilding);
+            return result;
+
         }
     }
 }

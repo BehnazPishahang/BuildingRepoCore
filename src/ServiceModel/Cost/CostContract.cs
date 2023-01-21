@@ -17,7 +17,7 @@ public class CostContract
 
     public decimal? CashAmount { get; set; }
 
-    public BuildingContract? TheBuilding { get; set; }
+    public Building.Building? TheBuilding { get; set; }
     
     public string? BuildingId { get; set; }
     

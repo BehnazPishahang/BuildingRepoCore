@@ -2,20 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using ServiceModel.Building;
+using ServiceModel.Cost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Application.Building
 {
     public class BuildingRepository : GenericRepository<Domain.Building.Building>, Application.Building.IBuildingRepository
     {
+        public DataContext _Context { get; }
 
         public BuildingRepository(DataContext context) : base(context)
         {
-
+            _Context = context;
         }
 
         public async Task<IEnumerable<Domain.Building.Building>> GetbyCityName(string CityName)
@@ -55,9 +58,9 @@ namespace Application.Building
 
         }
 
-        public IEnumerable<BuildingContract> GetBuildingSelectLoading()
+        public IEnumerable<ServiceModel.Building.Building> GetBuildingSelectLoading()
         {
-            return _context.Set<Domain.Building.Building>().Select(x => new BuildingContract
+            return _context.Set<Domain.Building.Building>().Select(x => new Building
             {
                 CityName = x.CityName,
                 Title = x.Title
@@ -65,7 +68,35 @@ namespace Application.Building
 
         }
 
+        public string  AddBuilding(ServiceModel.Building.Building Request)
+        {
+            Domain.Building.Building OneBuilding = new Domain.Building.Building
+            {
+                Plaque=Request.Plaque,
+                Address=Request.Address,
+                CityName=Request.CityName,
+                FloorCount=Request.FloorCount,
+                Title =Request.Title
+                //,
+                //TheCostList = Request.TheCostList.Select(cost => new Domain.Cost.Cost()
+                //{
+                //    Amount=cost.Amount,
+                //    CashAmount=cost.CashAmount,
+                //    EventDate=cost.EventDate,
+                //    FromDate = cost.FromDate,
+                //    TheObjectState= ObjectStateRepository(cost.TheObjectState.Code)
+                    
+                //}).ToList()
+                
+                
+            };
 
+            _Context.Buildings.Add(OneBuilding);
+            _context.SaveChanges();
+            string Message = ($"ساختمان {OneBuilding.Title} ذخیره شد.");
+            return Message;
+
+        }
 
 
     }

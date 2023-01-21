@@ -2,7 +2,7 @@
 
 namespace ServiceModel.Building;
 
-public class BuildingContract
+public class Building
 {
     public Guid Id { get; set; }
     
