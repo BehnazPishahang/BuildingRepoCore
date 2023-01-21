@@ -1,3 +1,5 @@
+using Application.Common;
+using Application.UnitOfWork;
 using Application.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +11,11 @@ namespace WebApi.Controllers.User;
 
 public class UserController : BaseController<UserRequest, UserResponse>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUnitOfWork unitOfWork)
     {
-        _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
     
     [HttpPost]
@@ -22,7 +24,7 @@ public class UserController : BaseController<UserRequest, UserResponse>
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserResponse> GetById([FromBody] UserRequest request)
     {
-        var theUser = await _userRepository.GetById(request.theUserContract.Id);
+        var theUser = await _unitOfWork.Repositorey<IGenericRepository<Domain.User.User>>().GetById(request.theUserContract.Id);
         
         return new UserResponse()
         {
@@ -48,7 +50,7 @@ public class UserController : BaseController<UserRequest, UserResponse>
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserResponse> GetAll()
     {
-        var theUserList = await _userRepository.GetAll();
+        var theUserList = await _unitOfWork.Repositorey<IGenericRepository<Domain.User.User>>().GetAll();
         
         return new UserResponse()
         {

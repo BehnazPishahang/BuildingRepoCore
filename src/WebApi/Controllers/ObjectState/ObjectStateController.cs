@@ -1,4 +1,6 @@
-﻿using Application.ObjectState;
+﻿using Application.Common;
+using Application.ObjectState;
+using Application.UnitOfWork;
 using Building.Core.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +14,15 @@ namespace WebApi.Controllers.ObjectState;
 
 public class ObjectStateController : BaseController<ObjectStateRequest, ObjectStateResponse>
 {
-    private readonly IObjectStateRepository _objectStateRepository;
     private readonly AppConfiguration _appConfiguration;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options)
+    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options, IUnitOfWork unitOfWork)
     {
-        _objectStateRepository = objectStateRepository;
+        _unitOfWork = unitOfWork;
         _appConfiguration = options.Value;
     }
-    
+
     [HttpPost]
     [Authorize]
     [ServiceFilter(typeof(ActionFilterModelStateValidation))]
@@ -28,8 +30,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     public override async Task<ObjectStateResponse> GetById([FromBody] ObjectStateRequest request)
     {
         
-        var theObjectStateType = await _objectStateRepository.GetById(request.theObjectStateContract.Id);
-        
+        var theObjectStateType = await _unitOfWork.Repositorey<IGenericRepository<Domain.ObjectState.ObjectState>>().GetById(request.theObjectStateContract.Id);
         return new ObjectStateResponse()
         {
             theObjectStateContractList = new List<ObjectStateContract>()
@@ -49,7 +50,7 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetAll()
     {
-        var theObjectStateList = await _objectStateRepository.GetAll();
+        var theObjectStateList = await _unitOfWork.Repositorey<IGenericRepository<Domain.ObjectState.ObjectState>>().GetAll();
 
         return new ObjectStateResponse()
         {
