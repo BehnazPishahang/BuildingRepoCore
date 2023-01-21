@@ -1,3 +1,5 @@
+using Application.Common;
+using Application.UnitOfWork;
 using Application.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +11,11 @@ namespace WebApi.Controllers.User;
 
 public class UserAccessController : BaseController<UserAccessRequest, UserAccessResponse>
 {
-    private readonly IUserAccessRepository _userAccessRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserAccessController(IUserAccessRepository userAccessRepository)
+    public UserAccessController(IUnitOfWork unitOfWork)
     {
-        _userAccessRepository = userAccessRepository;
+        _unitOfWork = unitOfWork;
     }
     
     [HttpPost]
@@ -22,7 +24,7 @@ public class UserAccessController : BaseController<UserAccessRequest, UserAccess
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserAccessResponse> GetById([FromBody] UserAccessRequest request)
     {
-        var theUserAccess = await _userAccessRepository.GetById(request.theUserAccessContract.Id);
+        var theUserAccess = await _unitOfWork.Repositorey<IGenericRepository<Domain.User.UserAccess>>().GetById(request.theUserAccessContract.Id);
         
         return new UserAccessResponse()
         {
@@ -46,7 +48,7 @@ public class UserAccessController : BaseController<UserAccessRequest, UserAccess
     [Route("api/v1/[controller]/[action]")]
     public override async Task<UserAccessResponse> GetAll()
     {
-        var theUserAccessList = await _userAccessRepository.GetAll();
+        var theUserAccessList = await _unitOfWork.Repositorey<IGenericRepository<Domain.User.UserAccess>>().GetAll();
         
         return new UserAccessResponse()
         {

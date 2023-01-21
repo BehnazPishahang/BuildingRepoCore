@@ -1,4 +1,6 @@
-﻿using Application.Cost;
+﻿using Application.Common;
+using Application.Cost;
+using Application.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceModel.Cost;
@@ -9,11 +11,11 @@ namespace WebApi.Controllers.Cost;
 
 public class CostController : BaseController<CostRequest, CostResponse>
 {
-    private readonly ICostRepository _costRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CostController(ICostRepository costRepository)
+    public CostController(IUnitOfWork unitOfWork)
     {
-        _costRepository = costRepository;
+        _unitOfWork = unitOfWork;
     }
 
     [HttpPost]
@@ -22,7 +24,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostResponse> GetById([FromBody] CostRequest request)
     {
-        var theCost = await _costRepository.GetById(request.theCostContract.Id);
+        var theCost = await _unitOfWork.Repositorey<IGenericRepository<Domain.Cost.Cost>>().GetById(request.theCostContract.Id);
 
         return new CostResponse()
         {
@@ -49,7 +51,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostResponse> GetAll()
     {
-        var theCostList = await _costRepository.GetAll();
+        var theCostList = await _unitOfWork.Repositorey<IGenericRepository<Domain.Cost.Cost>>().GetAll();
 
         return new CostResponse()
         {
@@ -73,7 +75,7 @@ public class CostController : BaseController<CostRequest, CostResponse>
     [Route("api/v1/[controller]/[action]")]
     public async Task<CostResponse> GetByDate([FromBody] GetByDateRequest request)
     {
-        var theCostList = await _costRepository.GetByDate(request.date);
+        var theCostList = await _unitOfWork.Repositorey<ICostRepository>().GetByDate(request.date);
 
         return new CostResponse()
         {

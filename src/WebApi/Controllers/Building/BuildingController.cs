@@ -4,6 +4,8 @@ using Persistence;
 using ServiceModel.Building;
 using ServiceModel.Cost;
 using System.Security.Cryptography;
+using Application.Common;
+using Application.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using WebApi.Controllers.BaseController;
 using static WebApi.Controllers.Authentication.AuthenticationController;
@@ -12,13 +14,12 @@ namespace WebApi.Controllers.Building
 {
     public class BuildingController : BaseController<BuildingRequest, BuildingResponse>
     {
-        private readonly IBuildingRepository _buildingRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BuildingController(IBuildingRepository buildingRepository)
+        public BuildingController(IUnitOfWork unitOfWork)
         {
-            _buildingRepository = buildingRepository;
+            _unitOfWork = unitOfWork;
         }
-
 
         [HttpPost]
         [Authorize]
@@ -26,9 +27,7 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetById([FromBody] BuildingRequest request)
         {
-
-
-            var Onebuilding = await _buildingRepository.GetById(request.theBuildingContract.Id);
+            var Onebuilding = await _unitOfWork.Repositorey<IGenericRepository<Domain.Building.Building>>().GetById(request.theBuildingContract.Id);
 
             return new BuildingResponse()
             {
@@ -60,7 +59,7 @@ namespace WebApi.Controllers.Building
 
             //HMACSHA256 hmac = new HMACSHA256();
             //string key = Convert.ToBase64String(hmac.Key);
-            var theBuildingList = await _buildingRepository.GetAll();
+            var theBuildingList = await _unitOfWork.Repositorey<IGenericRepository<Domain.Building.Building>>().GetAll();
 
             return new BuildingResponse()
             {
@@ -81,7 +80,7 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public async Task<BuildingResponse> GetbyCityName([FromBody] BuildingRequest request)
         {
-            var Thebuilding = await _buildingRepository.GetbyCityName(request.theBuildingContract.CityName);
+            var Thebuilding = await _unitOfWork.Repositorey<IBuildingRepository>().GetbyCityName(request.theBuildingContract.CityName);
 
             return new BuildingResponse()
             {
@@ -102,7 +101,7 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public async Task<BuildingResponse> GetBuildingEager()
         {
-            var theBuildingList = await _buildingRepository.GetBuildingEager();
+            var theBuildingList = await _unitOfWork.Repositorey<IBuildingRepository>().GetBuildingEager();
 
             return new BuildingResponse()
             {
@@ -132,7 +131,7 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public async Task<BuildingResponse> GetBuildingExplicit()
         {
-            var theBuildingList = _buildingRepository.GetBuildingExplicit();
+            var theBuildingList = _unitOfWork.Repositorey<IBuildingRepository>().GetBuildingExplicit();
 
             return new BuildingResponse()
             {
@@ -167,7 +166,7 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public async Task<BuildingResponse> GetBuildingSelectLoading()
         {
-            var theBuildingList = _buildingRepository.GetBuildingSelectLoading();
+            var theBuildingList = _unitOfWork.Repositorey<IBuildingRepository>().GetBuildingSelectLoading();
 
             return new BuildingResponse()
             {

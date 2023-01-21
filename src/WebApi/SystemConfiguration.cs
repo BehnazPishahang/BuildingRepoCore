@@ -1,4 +1,6 @@
 ﻿using Application;
+using Application.Common;
+using Application.UnitOfWork;
 using Building.Core.WebApi;
 using Building.Core.WebApi.Middlewares;
 using Commons;
@@ -81,10 +83,11 @@ public static class SystemConfiguration
         });
 
         builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
-
-        builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
+        builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         builder.Services.AddScoped<ActionFilterModelStateValidation>();
-
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
+        
         return builder.Build();
     }
 
