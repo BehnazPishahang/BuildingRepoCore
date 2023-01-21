@@ -1,4 +1,6 @@
-﻿using Application.Cost;
+﻿using Application.Common;
+using Application.Cost;
+using Application.UnitOfWork;
 using Domain.Cost;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,11 @@ namespace WebApi.Controllers.Cost;
 public class CostTypeController : BaseController<CostTypeRequest, CostTypeResponse>
 {
 
-    private readonly ICostTypeRepository _costTypeRepository;
-    public CostTypeController(ICostTypeRepository costTypeRepository)
+    private readonly IUnitOfWork _unitOfWork;
+
+    public CostTypeController(IUnitOfWork unitOfWork)
     {
-        _costTypeRepository = costTypeRepository;
+        _unitOfWork = unitOfWork;
     }
 
     [HttpPost]
@@ -25,7 +28,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetById([FromBody] CostTypeRequest request)
     {
-        var theCostType = await _costTypeRepository.GetById(request.theCostTypeContract.Id);
+        var theCostType = await _unitOfWork.Repositorey<IGenericRepository<Domain.Cost.CostType>>().GetById(request.theCostTypeContract.Id);
 
         return new CostTypeResponse()
         {
@@ -47,7 +50,7 @@ public class CostTypeController : BaseController<CostTypeRequest, CostTypeRespon
     [Route("api/v1/[controller]/[action]")]
     public override async Task<CostTypeResponse> GetAll()
     {
-        var theCostTypeList = await _costTypeRepository.GetAll();
+        var theCostTypeList = await _unitOfWork.Repositorey<IGenericRepository<Domain.Cost.CostType>>().GetAll();
 
         return new CostTypeResponse()
         {
