@@ -41,7 +41,11 @@ namespace WebApi.Controllers.Building
                         Plaque = Onebuilding.Plaque,
                         Title = Onebuilding.Title,
                         CityName = Onebuilding.CityName,
-                        FloorCount = Onebuilding.FloorCount
+                        FloorCount = Onebuilding.FloorCount,
+                        TheCostList = Onebuilding.TheCostList.Select(cost => new CostContract()
+                        {
+                           Amount = cost.Amount,
+                        }).ToList(),
                     }
                 }
             };

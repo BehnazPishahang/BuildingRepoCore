@@ -17,4 +17,5 @@ public class BuildingContract
     public string? CityName { get; set; }
 
     public virtual List<CostContract>? TheCostList { get; set; }
+
 }

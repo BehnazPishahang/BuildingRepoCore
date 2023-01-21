@@ -1,7 +1,9 @@
 ﻿using Application;
+using Building.Core.WebApi;
 using Building.Core.WebApi.Middlewares;
 using Commons;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,12 +11,13 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using static WebApi.Controllers.Authentication.AuthenticationController;
 
-namespace Building.Core.WebApi;
+namespace WebApi;
 
 public static class SystemConfiguration
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+
         builder.Services.AddControllers().AddJsonOptions(option =>
         {
             option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull | System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
@@ -93,17 +96,18 @@ public static class SystemConfiguration
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi TestWebApi v1");
         });
 
-        app.UseRouting();
-
         app.UseAuthentication();
         app.UseAuthorization();
-        //app.UseMiddleware<AddAllowOriginMiddleware>();
+        app.UseMiddleware<AddAllowOriginMiddleware>();
+        if (!app.Environment.IsDevelopment())
 
-        app.UseEndpoints(endpoint =>
         {
-            endpoint.MapControllers();
-        });
-
+            app.MapControllers();
+        }
+        else
+        {
+            app.MapControllers().AllowAnonymous();
+        }
         return app;
     }
 }
