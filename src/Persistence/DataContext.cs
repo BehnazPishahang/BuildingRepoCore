@@ -18,6 +18,7 @@ namespace Persistence
         {
         }
 
+        #region DBSets
         public DbSet<Building> Buildings { get; set; }
 
         public DbSet<Cost> Costs { get; set; }
@@ -30,7 +31,8 @@ namespace Persistence
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<UserAccess> UserAccesses { get; set; }
+        public DbSet<UserAccess> UserAccesses { get; set; } 
+        #endregion
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

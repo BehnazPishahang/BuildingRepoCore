@@ -11,5 +11,9 @@ namespace Application.Building
     public interface IBuildingRepository : IGenericRepository<Domain.Building.Building>
     {
         Task<IEnumerable<Domain.Building.Building>> GetbyCityName(string CityName);
+
+        Task<IEnumerable<Domain.Building.Building>> GetBuildingEager();
+
+        IEnumerable<Domain.Building.Building> GetBuildingExplicit();
     }
 }
