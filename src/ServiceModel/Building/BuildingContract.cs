@@ -1,4 +1,6 @@
-﻿namespace ServiceModel.Building;
+﻿using ServiceModel.Cost;
+
+namespace ServiceModel.Building;
 
 public class BuildingContract
 {
@@ -14,5 +16,6 @@ public class BuildingContract
 
     public string? CityName { get; set; }
 
-    public virtual List<ServiceModel.Cost.CostContract>? TheCostList { get; set; }
+    public virtual List<CostContract>? TheCostList { get; set; }
+
 }

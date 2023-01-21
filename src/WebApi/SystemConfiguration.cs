@@ -17,11 +17,12 @@ public static class SystemConfiguration
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers()
-        .AddJsonOptions(option =>
+
+        builder.Services.AddControllers().AddJsonOptions(option =>
         {
             option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull | System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
-        });
+        }); 
+        
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingWebApi", Version = "v1" });
@@ -78,7 +79,7 @@ public static class SystemConfiguration
                 ClockSkew = TimeSpan.Zero
             };
         });
-        
+
         builder.Services.AddRepositories(typeof(Application.Building.BuildingRepository).Assembly);
 
         builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
@@ -99,6 +100,7 @@ public static class SystemConfiguration
         app.UseAuthorization();
         app.UseMiddleware<AddAllowOriginMiddleware>();
         if (!app.Environment.IsDevelopment())
+
         {
             app.MapControllers();
         }
