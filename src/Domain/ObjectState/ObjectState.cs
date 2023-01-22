@@ -12,5 +12,7 @@ namespace Domain.ObjectState
         public string Code { get; set; }
 
         public string Title { get; set; }
+
+        public bool State { get; set; } = true;
     }
 }

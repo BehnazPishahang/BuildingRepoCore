@@ -37,6 +37,14 @@ namespace Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region QueryFilter
+            //با این فیلتر بصورت پیش فرض زمانی که روی این جدول ها کوئری میزنیم این فیلترها اعمال میشوند مگر اینکه از
+            //IgnoreQueryFilters
+            //در هنگام کوئری زدن استفاده کنیم
+            modelBuilder.Entity<ObjectState>().HasQueryFilter(o => !o.State);
+            modelBuilder.Entity<CostType>().HasQueryFilter(c => !c.State); 
+            #endregion
+
             var buildingOne = new Building()
             {
                 Id = new Guid("6BF35BE1-1677-4245-BBA0-622EE23CE9D7"),
