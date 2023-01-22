@@ -111,7 +111,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9869de4c-899a-4893-9fa8-4787ffb8937d"),
+                            Id = new Guid("fb6eecbb-1dd3-4227-85fb-e6c59774b79d"),
                             Amount = 2000m,
                             BuildingId = new Guid("6bf35be1-1677-4245-bba0-622ee23ce9d7"),
                             CashAmount = 30000m,
@@ -123,7 +123,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b1a0f110-8d44-49e3-919c-4b92fb22e9c7"),
+                            Id = new Guid("2cfac3a2-ac1b-47a6-b491-0d4f7808a34a"),
                             Amount = 1000m,
                             BuildingId = new Guid("5bc530db-e4ce-4046-ac4a-e0559b48d1a8"),
                             CashAmount = 40000m,
@@ -300,7 +300,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7a57aecf-2187-43cb-9a53-5583aa082a30"),
+                            Id = new Guid("bd1aebff-7b29-4af3-b593-711473607fe6"),
                             EndDate = "9999/99/99",
                             SignText = "مجید عباسی _ مدیر ساختمان",
                             StartDate = "1401/10/20",
@@ -309,7 +309,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("05b07b32-494c-47cd-9332-d4a1ffd4b670"),
+                            Id = new Guid("ab00567f-f3af-4c64-83a0-4950a2a5e436"),
                             EndDate = "9999/99/99",
                             SignText = "بهناز پیشاهنگ _ اعضای ساختمان",
                             StartDate = "1401/10/20",
@@ -392,7 +392,7 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.User.User", "TheUser")
-                        .WithMany()
+                        .WithMany("TheUserAccessList")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -405,6 +405,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Building.Building", b =>
                 {
                     b.Navigation("TheCostList");
+                });
+
+            modelBuilder.Entity("Domain.User.User", b =>
+                {
+                    b.Navigation("TheUserAccessList");
                 });
 #pragma warning restore 612, 618
         }
