@@ -10,9 +10,9 @@ namespace ServiceModel.Building
     {
         public BuildingRequest()
         {
-            this.theBuildingContract = new Building();
+            this.theBuildingContract = new BuildingContract();
         }
-        public Building theBuildingContract { get; set; }
+        public BuildingContract theBuildingContract { get; set; }
     }
     
   

@@ -58,9 +58,9 @@ namespace Application.Building
 
         }
 
-        public IEnumerable<ServiceModel.Building.Building> GetBuildingSelectLoading()
+        public IEnumerable<Domain.Building.Building> GetBuildingSelectLoading()
         {
-            return _context.Set<Domain.Building.Building>().Select(x => new Building
+            return _context.Set<Domain.Building.Building>().Select(x => new Domain.Building.Building
             {
                 CityName = x.CityName,
                 Title = x.Title
@@ -68,7 +68,7 @@ namespace Application.Building
 
         }
 
-        public string  AddBuilding(ServiceModel.Building.Building Request)
+        public string  AddBuilding(ServiceModel.Building.BuildingContract Request)
         {
             Domain.Building.Building OneBuilding = new Domain.Building.Building
             {
@@ -97,7 +97,6 @@ namespace Application.Building
             return Message;
 
         }
-
 
     }
 }
