@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,10 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230124072719_Config3")]
+    partial class Config3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,16 +40,14 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("Plaque")
+                        .HasMaxLength(4)
+                        .IsUnicode(false)
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Title");
 
                     b.ToTable("Buildings");
 
@@ -115,7 +115,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("97ba5517-51c6-4599-aa74-a72d98540dbd"),
+                            Id = new Guid("b8f1948c-7eb9-415f-ad28-0bcc2663ce38"),
                             Amount = 2000m,
                             BuildingId = new Guid("6bf35be1-1677-4245-bba0-622ee23ce9d7"),
                             CashAmount = 30000m,
@@ -127,7 +127,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6887caa7-6f29-41ed-b1d5-14f616c831c7"),
+                            Id = new Guid("61b5c97b-4cdc-4678-a91b-1fd0151f9276"),
                             Amount = 1000m,
                             BuildingId = new Guid("5bc530db-e4ce-4046-ac4a-e0559b48d1a8"),
                             CashAmount = 40000m,
@@ -145,14 +145,17 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(4)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(4)");
 
                     b.Property<bool>("State")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -314,7 +317,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f40a03e9-fb1f-4b43-b127-ac01c0c6cad8"),
+                            Id = new Guid("3f18b8b5-149d-4490-bde7-951215ed6cbb"),
                             EndDate = "9999/99/99",
                             SignText = "مجید عباسی _ مدیر ساختمان",
                             StartDate = "1401/10/20",
@@ -323,7 +326,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7f0e5245-f26e-4779-8f94-d089073f6114"),
+                            Id = new Guid("3ab13d32-989c-4c56-a91a-97984dbae28c"),
                             EndDate = "9999/99/99",
                             SignText = "بهناز پیشاهنگ _ اعضای ساختمان",
                             StartDate = "1401/10/20",

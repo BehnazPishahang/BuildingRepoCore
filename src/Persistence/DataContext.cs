@@ -4,6 +4,8 @@ using Domain.Cost;
 using Domain.ObjectState;
 using Domain.User;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Config.Building;
+using Persistence.Config.Cost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -204,8 +206,13 @@ namespace Persistence
                      SignText = "بهناز پیشاهنگ _ اعضای ساختمان"
             
                  });
-            
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Cost).Assembly);
+
+            //modelBuilder.ApplyConfigurationsFromAssembly(typeof(BuildingConfig).Assembly);
+            //modelBuilder.ApplyConfiguration(new CostConfig());
+            //modelBuilder.ApplyConfiguration(new CostTypeConfig());
+            modelBuilder.ApplyConfiguration(new BuildingConfig());
+
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

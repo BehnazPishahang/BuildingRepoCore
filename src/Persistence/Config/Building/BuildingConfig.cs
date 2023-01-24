@@ -7,7 +7,8 @@ namespace Persistence.Config.Building
     {
         public void Configure(EntityTypeBuilder<Domain.Building.Building> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(c => c.Title).HasMaxLength(500).IsUnicode(false);
+            builder.HasIndex(c=> c.Title);
         }
     }
 }
