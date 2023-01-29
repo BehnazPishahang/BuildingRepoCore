@@ -40,15 +40,27 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            #region OwnedType
             modelBuilder.Entity<Building>(building =>
+                {
+                    building.OwnsOne(d => d.TheBuildingHistory);
+                    building.OwnsOne(c => c.TheBuildingHistory).ToTable("BuildingHistory");
+
+                }
+               );
+
+            #endregion
+
+            #region TableSplittingForBuilding
+            modelBuilder.Entity<Building>(c =>
             {
-                building.OwnsOne(d => d.TheBuildingHistory);
-                building.OwnsOne(c => c.TheBuildingHistory).ToTable("BuildingHistory");
+                c.HasOne(c => c.TheBuildingRegion).WithOne().HasForeignKey<BuildingRegion>(c => c.Id);
+                c.ToTable("Buildings");
 
-            }
-           );
+            });
+            modelBuilder.Entity<BuildingRegion>().ToTable("Buildings");
 
-
+            #endregion
 
 
             #region QueryFilter

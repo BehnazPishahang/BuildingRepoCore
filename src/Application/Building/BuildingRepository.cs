@@ -25,6 +25,7 @@ namespace Application.Building
         {
             return await _context.Set<Domain.Building.Building>().Where((a => a.CityName == CityName))
                 .Include(b => b.TheCostList)
+                .Include(b=> b.TheBuildingRegion)
                 .ToListAsync();
         }
 

@@ -20,4 +20,6 @@ public class BuildingContract
 
     public BuildingHistoryContract? TheBuildingHistory { get; set; }
 
+    public BuildingRegionContract? TheBuildingRegion { get; set; }
+
 }

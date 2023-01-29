@@ -25,5 +25,7 @@ namespace Domain.Building
 
         public BuildingHistory? TheBuildingHistory { get; set; }
 
+        public BuildingRegion? TheBuildingRegion { get; set; }
+
     }
 }

@@ -46,6 +46,7 @@ namespace WebApi.Controllers.Building
                         Title = Onebuilding.Title,
                         CityName = Onebuilding.CityName,
                         FloorCount = Onebuilding.FloorCount,
+                         
                         TheBuildingHistory=new BuildingHistoryContract()
                     {
                         age=Onebuilding.TheBuildingHistory.age,
@@ -108,7 +109,11 @@ namespace WebApi.Controllers.Building
                     Plaque = Onebuilding.Plaque,
                     Title = Onebuilding.Title,
                     CityName = Onebuilding.CityName,
-                    FloorCount = Onebuilding.FloorCount
+                    FloorCount = Onebuilding.FloorCount,
+                    TheBuildingRegion = new BuildingRegionContract()
+                    {
+                        region = Onebuilding.TheBuildingRegion?.region
+                    }
                 }).ToList()
             };
         }
