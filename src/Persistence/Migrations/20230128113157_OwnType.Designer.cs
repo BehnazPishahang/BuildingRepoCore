@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,10 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230128113157_OwnType")]
+    partial class OwnType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +117,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80957d72-4bba-42d7-8306-619081e93893"),
+                            Id = new Guid("48b51ade-2d04-457b-86f9-a6c92a40304a"),
                             Amount = 2000m,
                             BuildingId = new Guid("6bf35be1-1677-4245-bba0-622ee23ce9d7"),
                             CashAmount = 30000m,
@@ -127,7 +129,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5c9db8b4-f92d-4f75-92c0-d4154bede04f"),
+                            Id = new Guid("e1c1026c-7c37-47b7-b829-cdb9ef31d78a"),
                             Amount = 1000m,
                             BuildingId = new Guid("5bc530db-e4ce-4046-ac4a-e0559b48d1a8"),
                             CashAmount = 40000m,
@@ -314,7 +316,7 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a937d9d4-e9b0-401b-9b3c-60af5f686c8e"),
+                            Id = new Guid("3d8e4963-75e1-431f-8545-b76d6e18ec20"),
                             EndDate = "9999/99/99",
                             SignText = "مجید عباسی _ مدیر ساختمان",
                             StartDate = "1401/10/20",
@@ -323,7 +325,7 @@ namespace Persistence.Migrations
                         },
                         new
                         {
-                            Id = new Guid("60ec61dc-1212-44ee-94c3-768de39201ad"),
+                            Id = new Guid("69dc2e41-957b-4a50-aecb-22900d16ac6e"),
                             EndDate = "9999/99/99",
                             SignText = "بهناز پیشاهنگ _ اعضای ساختمان",
                             StartDate = "1401/10/20",
@@ -377,7 +379,7 @@ namespace Persistence.Migrations
                             b1.Property<Guid>("BuildingId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<int?>("age")
+                            b1.Property<int>("age")
                                 .HasColumnType("int");
 
                             b1.Property<string>("engineerFamily")
@@ -396,7 +398,8 @@ namespace Persistence.Migrations
                                 .HasForeignKey("BuildingId");
                         });
 
-                    b.Navigation("TheBuildingHistory");
+                    b.Navigation("TheBuildingHistory")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Cost.Cost", b =>

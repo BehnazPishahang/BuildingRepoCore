@@ -46,10 +46,17 @@ namespace WebApi.Controllers.Building
                         Title = Onebuilding.Title,
                         CityName = Onebuilding.CityName,
                         FloorCount = Onebuilding.FloorCount,
-                        TheCostList = Onebuilding.TheCostList.Select(cost => new CostContract()
+                        TheBuildingHistory=new BuildingHistoryContract()
+                    {
+                        age=Onebuilding.TheBuildingHistory.age,
+                        engineerName=Onebuilding.TheBuildingHistory.engineerName,
+                        engineerFamily=Onebuilding.TheBuildingHistory.engineerFamily
+                    },
+                        TheCostList = Onebuilding.TheCostList?.Select(cost => new CostContract()
                         {
                            Amount = cost.Amount,
-                        }).ToList(),
+                        }).ToList()
+
                     }
                 }
             };
@@ -75,6 +82,12 @@ namespace WebApi.Controllers.Building
                     Title = x.Title,
                     CityName = x.CityName,
                     FloorCount = x.FloorCount,
+                    TheBuildingHistory = new()
+                    {
+                        age = x.TheBuildingHistory?.age,
+                        engineerName = x.TheBuildingHistory?.engineerName,
+                        engineerFamily = x.TheBuildingHistory?.engineerFamily
+                    }
                 }).ToList()
             };
         }
@@ -211,7 +224,7 @@ namespace WebApi.Controllers.Building
 
                 }).ToList()
             };
-             _UnitOfWork.Repositorey<IBuildingRepository>().Add(Onebuilding);
+            _UnitOfWork.Repositorey<IBuildingRepository>().Add(Onebuilding);
             _UnitOfWork.Commit();
             return "عملیات ثبت با موفقیت انجام شد";
 

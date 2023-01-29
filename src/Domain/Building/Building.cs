@@ -23,5 +23,7 @@ namespace Domain.Building
         [InverseProperty("TheBuilding")]
         public virtual List<Domain.Cost.Cost>? TheCostList { get; set; }
 
+        public BuildingHistory? TheBuildingHistory { get; set; }
+
     }
 }

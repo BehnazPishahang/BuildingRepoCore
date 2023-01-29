@@ -18,4 +18,6 @@ public class BuildingContract
 
     public virtual List<CostContract>? TheCostList { get; set; }
 
+    public BuildingHistoryContract? TheBuildingHistory { get; set; }
+
 }
