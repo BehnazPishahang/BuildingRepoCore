@@ -25,6 +25,7 @@ public static class SystemConfiguration
             option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull | System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
         }); 
         
+        builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingWebApi", Version = "v1" });
