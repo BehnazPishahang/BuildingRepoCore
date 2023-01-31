@@ -28,4 +28,9 @@
     {
         public string Secret { get; set; }
     }
+
+    public class RedisConfig
+    {
+        public string Configuration { get; set; }
+    }
 }

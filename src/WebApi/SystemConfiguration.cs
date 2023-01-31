@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistence;
@@ -23,9 +24,16 @@ public static class SystemConfiguration
         builder.Services.AddControllers().AddJsonOptions(option =>
         {
             option.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull | System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+        });
+
+        #region Caching
+        //  builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetValue<string>("Configuration:RedisConfig:Configuration");
         }); 
-        
-        builder.Services.AddDistributedMemoryCache();
+        #endregion
+
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingWebApi", Version = "v1" });
@@ -88,7 +96,7 @@ public static class SystemConfiguration
         builder.Services.AddScoped<ActionFilterModelStateValidation>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection(Constants.AppSetting.Configuration));
-        
+
         return builder.Build();
     }
 
