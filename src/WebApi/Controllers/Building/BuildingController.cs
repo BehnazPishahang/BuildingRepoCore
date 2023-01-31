@@ -30,30 +30,26 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetById([FromBody] BuildingRequest request)
         {
-
-
-            var Onebuilding = await _UnitOfWork.Repositorey<IBuildingRepository>().GetById(request.theBuildingContract.Id);
+            var oneBuilding = await _UnitOfWork.Repositorey<IBuildingRepository>().GetById(request.theBuildingContract.Id);
 
             return new BuildingResponse()
             {
-                theBuildingContractList = new List<ServiceModel.Building.BuildingContract>()
+                theBuildingContractList = new List<BuildingContract>()
                 {
-                    new ServiceModel.Building.BuildingContract()
+                    new ()
                     {
-
-                        Address = Onebuilding.Address,
-                        Plaque = Onebuilding.Plaque,
-                        Title = Onebuilding.Title,
-                        CityName = Onebuilding.CityName,
-                        FloorCount = Onebuilding.FloorCount,
-                         
+                        Address = oneBuilding.Address,
+                        Plaque = oneBuilding.Plaque,
+                        Title = oneBuilding.Title,
+                        CityName = oneBuilding.CityName,
+                        FloorCount = oneBuilding.FloorCount,
                         TheBuildingHistory=new BuildingHistoryContract()
-                    {
-                        age=Onebuilding.TheBuildingHistory.age,
-                        engineerName=Onebuilding.TheBuildingHistory.engineerName,
-                        engineerFamily=Onebuilding.TheBuildingHistory.engineerFamily
-                    },
-                        TheCostList = Onebuilding.TheCostList?.Select(cost => new CostContract()
+                        {
+                            age=oneBuilding.TheBuildingHistory.age,
+                            engineerName=oneBuilding.TheBuildingHistory.engineerName,
+                            engineerFamily=oneBuilding.TheBuildingHistory.engineerFamily
+                        },
+                        TheCostList = oneBuilding.TheCostList?.Select(cost => new CostContract()
                         {
                            Amount = cost.Amount,
                         }).ToList()

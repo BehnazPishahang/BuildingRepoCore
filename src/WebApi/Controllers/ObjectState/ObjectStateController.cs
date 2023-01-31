@@ -4,7 +4,9 @@ using Application.UnitOfWork;
 using Building.Core.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Persistence;
 using ServiceModel.ObjectState;
 using WebApi.Controllers.BaseController;
@@ -16,10 +18,12 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
 {
     private readonly AppConfiguration _appConfiguration;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IDistributedCache _cache;
 
-    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options, IUnitOfWork unitOfWork)
+    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options, IUnitOfWork unitOfWork, IDistributedCache cache)
     {
         _unitOfWork = unitOfWork;
+        _cache = cache;
         _appConfiguration = options.Value;
     }
 
@@ -29,18 +33,33 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     [Route("api/v1/[controller]/[action]")]
     public override async Task<ObjectStateResponse> GetById([FromBody] ObjectStateRequest request)
     {
-        
+        var cacheResult = await _cache.GetStringAsync(request.theObjectStateContract.Id.ToString());
+        if (cacheResult != null)
+        {
+            return new ObjectStateResponse()
+            {
+                theObjectStateContractList = JsonConvert.DeserializeObject<List<ObjectStateContract>>(cacheResult) 
+            };
+        }
+
         var theObjectStateType = await _unitOfWork.Repositorey<IGenericRepository<Domain.ObjectState.ObjectState>>().GetById(request.theObjectStateContract.Id);
+        var resultList = new List<ObjectStateContract>()
+        {
+            new ()
+            {
+                Code = theObjectStateType.Code,
+                Title = theObjectStateType.Title
+            }
+        };
+
+        await _cache.SetStringAsync(request.theObjectStateContract.Id.ToString(), JsonConvert.SerializeObject(resultList), new DistributedCacheEntryOptions
+        {
+            SlidingExpiration = TimeSpan.FromMinutes(30),
+        });
+
         return new ObjectStateResponse()
         {
-            theObjectStateContractList = new List<ObjectStateContract>()
-            {
-                new ObjectStateContract()
-                {
-                    Code = theObjectStateType.Code,
-                    Title = theObjectStateType.Title
-                }
-            },
+            theObjectStateContractList = resultList
         };
     }
 
