@@ -344,5 +344,3 @@ healthchecksdb
 /**/wwwroot/Scripts
 /**/wwwroot/js
 /**/wwwroot/css
-/src/WebApi/appsettings.json
-/src/WebApi/appsettings.Development.json
