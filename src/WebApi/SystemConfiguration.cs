@@ -64,6 +64,8 @@ public static class SystemConfiguration
             IntegratedSecurity = Convert.ToBoolean(builder.Configuration.GetValue<string>(Constants.UserSecrets.IntegratedSecurity)),
         };
 
+        builder.Services.AddAutoMapper(typeof(Program));
+        
         builder.Services.AddDbContext<DataContext>(opt =>
         {
             opt.UseSqlServer(sqlConnectionBuilder.ConnectionString);
@@ -111,15 +113,15 @@ public static class SystemConfiguration
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseMiddleware<AddAllowOriginMiddleware>();
-        if (!app.Environment.IsDevelopment())
-
-        {
-            app.MapControllers();
-        }
-        else
-        {
+        // if (!app.Environment.IsDevelopment())
+        //
+        // {
+        //     app.MapControllers();
+        // }
+        // else
+        // {
             app.MapControllers().AllowAnonymous();
-        }
+        // }
         return app;
     }
 }

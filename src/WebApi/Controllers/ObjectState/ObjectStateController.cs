@@ -1,6 +1,7 @@
 ﻿using Application.Common;
 using Application.ObjectState;
 using Application.UnitOfWork;
+using AutoMapper;
 using Building.Core.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,13 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     private readonly AppConfiguration _appConfiguration;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDistributedCache _cache;
+    private readonly IMapper _mapper;
 
-    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options, IUnitOfWork unitOfWork, IDistributedCache cache)
+    public ObjectStateController(IObjectStateRepository objectStateRepository, IOptions<AppConfiguration> options, IUnitOfWork unitOfWork, IDistributedCache cache, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _cache = cache;
+        _mapper = mapper;
         _appConfiguration = options.Value;
     }
 
@@ -70,14 +73,9 @@ public class ObjectStateController : BaseController<ObjectStateRequest, ObjectSt
     public override async Task<ObjectStateResponse> GetAll()
     {
         var theObjectStateList = await _unitOfWork.Repositorey<IGenericRepository<Domain.ObjectState.ObjectState>>().GetAll();
-
         return new ObjectStateResponse()
         {
-            theObjectStateContractList = theObjectStateList.Select(x => new ObjectStateContract()
-            {
-                Code = x.Code,
-                Title = x.Title
-            }).ToList()
-        } ;
+            theObjectStateContractList = _mapper.Map<List<ObjectStateContract>>(theObjectStateList)
+        };
     }
 }
