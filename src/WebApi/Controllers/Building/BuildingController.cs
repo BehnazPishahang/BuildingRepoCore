@@ -10,6 +10,7 @@ using static WebApi.Controllers.Authentication.AuthenticationController;
 using Application.ObjectState;
 using Application.UnitOfWork;
 using Application.Cost;
+using Commons.ServiceResponse;
 
 namespace WebApi.Controllers.Building
 {
@@ -30,7 +31,25 @@ namespace WebApi.Controllers.Building
         [Route("api/v1/[controller]/[action]")]
         public override async Task<BuildingResponse> GetById([FromBody] BuildingRequest request)
         {
+            if (request == null || request.theBuildingContract == null)
+            {
+                Result result = new Result
+                {
+                    Message = "ورودی خالیست",
+                    Code = -101
+                };
+                return Respond(result);
+            }
             var oneBuilding = await _UnitOfWork.Repositorey<IBuildingRepository>().GetById(request.theBuildingContract.Id);
+            if(oneBuilding==null)
+            {
+                Result result = new Result
+                {
+                    Message="شناسه ساخنمان نامعتبر است",
+                    Code=-102
+                };
+                return Respond(result);
+            }
 
             return new BuildingResponse()
             {
@@ -230,5 +249,13 @@ namespace WebApi.Controllers.Building
             return "عملیات ثبت با موفقیت انجام شد";
 
         }
+
+        private BuildingResponse Respond(Result result)
+        {
+            var response = new BuildingResponse() { Result = result };
+            return response;
+        }
     }
+
+
 }
